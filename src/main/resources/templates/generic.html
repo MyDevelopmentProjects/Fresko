@@ -1,0 +1,94 @@
+<div th:replace="baseHeader :: baseHeader" xmlns:th="http://www.w3.org/1999/xhtml"></div>
+
+<div class="container" style="margin-top: 16px;">
+
+    <main class="belowheader">
+
+        <div class="archive-description">
+
+            <h1 style="color: #4a4a4a;" th:text="${title}"></h1>
+
+        </div>
+
+        <div class="row">
+
+            <div class="content col-lg-12 mx-auto align-items-center">
+
+
+                <div class="row sr" th:if="${post != null && post.id == 11}">
+                    <div class="content col-lg-12 mx-auto">
+                        <article id="post-92" class="post-91 post type-post status-publish format-standard has-post-thumbnail hentry category-art tag-dolor tag-ipsum tag-lorem tag-sit">
+                            <div style="margin-top: 20px;" class="entry-content" th:utext="${post.localizedDescr(#locale)}"></div>
+                        </article>
+                    </div>
+                </div>
+
+                <article th:if="${news != null && news.content != null && news.content.size() > 0}"
+                         th:each="item : ${news.content}"
+                         class="blog-post row align-items-center post-91 post type-post status-publish format-standard has-post-thumbnail hentry category-art tag-dolor tag-ipsum tag-lorem tag-sit">
+
+                    <div class="blog-post-thumbnail-zone col-12 col-lg-6">
+
+                        <a th:href="${item.getPost().href() + '?lang=' + #locale}">
+                            <img width="768" height="512" th:src="@{${'/uploads/' + item.getPost().imgUrls}}"
+                                 class="blog-post-thumbnail wp-post-image"/>
+                        </a>
+
+                    </div>
+
+                    <div class="blog-post-text-zone col-12 col-lg-6">
+
+                        <h2>
+                            <a th:href="${item.getPost().href() + '?lang=' + #locale}" th:text="${item.getPost().localizedTitle(#locale)}"></a></h2>
+
+                        <div class="meta">
+
+                            <span class="date" th:inline="text">[[${item.post.ago(#locale)}]]</span>
+
+                        </div>
+
+
+                        <p th:utext="${item.getPost().shotDesc(15, #locale)}"></p>
+
+
+                    </div>
+
+                </article>
+
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+
+                        <li class="page-item" th:if="${news.getTotalPages() > 0}"
+                             th:each="pageNumber : ${#numbers.sequence(0, news.getTotalPages() - 1)}">
+
+                            <a th:href="@{ '/' + ${key} + '?page=' + ${pageNumber} + '&lang=' + ${#locale} }"
+                               th:with="pg=${pageNumber + 1}"
+                               th:text="${pg}"
+                               th:class="${pageNumber==news.getNumber() + 1} ? 'active page-link' : 'page-link'"></a>
+                        </li>
+
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="baseFooter :: baseFooter" xmlns:th="http://www.w3.org/1999/xhtml"></div>

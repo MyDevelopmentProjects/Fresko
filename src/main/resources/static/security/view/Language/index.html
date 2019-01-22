@@ -1,0 +1,90 @@
+<div class="padding">
+    <div class="box">
+        <div class="table-responsive">
+            <div class="box-body b-t">
+                <div class="pull-left">
+                    <button type="button" ng-click="showAddEdit()" class="md-btn md-raised m-b-sm w-xs green">
+                        New <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+                <imperio-search-input></imperio-search-input>
+            </div>
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th width="110px"></th>
+                    <th imperio-sortable-by="shortCode">
+                        ISO
+                    </th>
+                    <th>
+                        სახელი
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in data.content">
+                    <td>
+                        <button class="btn btn-icon btn-info" ng-click="showAddEdit(item)">
+                            <i class="fa fa-fw fa-pencil-alt"></i>
+                        </button>
+                        <button class="btn btn-icon btn-danger" ng-model="item"
+                                data-title="წავშალო ჩანაწერი?"
+                                ng-popover-placement="right"
+                                ng-popover-confirm="delete({{item.id}})">
+                            <i class="fa fa-fw fa-trash-alt"></i>
+                        </button>
+                    </td>
+                    <td>{{item.shortCode}}</td>
+                    <td>{{item.displayName}}</td>
+                </tr>
+                <tr ng-if="!data.content.length" class="text-center">
+                    <td colspan="100" class="warning">ჩანაწერები ვერ მოიძებნა</td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="table">
+                <tfoot class="hide-if-no-paging">
+                <tr>
+                    <td colspan="50" class="text-center">
+                        <imperio-pager></imperio-pager>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="showAddEdit" class="modal black-overlay" data-backdrop="false">
+    <div class="modal-dialog modal-lg" ng-form="addEditForm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{init.action}}</h5>
+            </div>
+            <div class="modal-body p-lg">
+                <section>
+                    <div class="form-group">
+                        <label>მოკლე ISO კოდი: </label>
+                        <input class="form-control" type="text" placeholder="ISO კოდი"
+                               ng-model="object.shortCode" required>
+                    </div>
+                </section>
+                <section>
+                    <div class="form-group">
+                        <label>დასახელება: </label>
+                        <input class="form-control" type="text" placeholder="დასახელება"
+                               ng-model="object.displayName" required>
+                    </div>
+                </section>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn dark-white p-x-md" data-dismiss="modal">დახურვა</button>
+                <button type="button" class="btn danger p-x-md"
+                        ng-disabled="addEditForm.$invalid"
+                        ng-click="save()">
+                    შენახვა
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

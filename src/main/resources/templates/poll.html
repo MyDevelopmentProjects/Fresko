@@ -1,0 +1,178 @@
+<div th:replace="baseHeader :: baseHeader" xmlns:th="http://www.w3.org/1999/xhtml"></div>
+
+<div class="single-thumbnail"
+     style="background-image: url(&#39;http://litmotion.net/demo/neori/wp-content/uploads/2018/01/art1-compressor.jpg&#39;); height: 250px;">
+
+    <div class="container">
+
+        <div class="single-thumbnail-inside row align-items-end">
+
+            <div class="single-title-zone ws-sr col">
+                <h1 th:text="${title}"></h1>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="single-top-area clearfix" style="visibility: hidden; margin: 0px auto 0 auto;">
+    <div class="author">
+        <img class="useravatar avatar-57 photo">
+        <div class="author-info">
+            <p></p>
+            <a href="javascript:void(0)"></a>
+        </div>
+    </div>
+    <div class="social-icons row align-items-center">
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="row sr">
+
+        <div class="content col-lg-12 mx-auto align-items-center">
+
+            <!-- /.single-top-area -->
+
+            <article id="post-91"
+                     class="post-91 post type-post status-publish format-standard has-post-thumbnail hentry category-art tag-dolor tag-ipsum tag-lorem tag-sit">
+
+                <div class="entry-content">
+
+                    <h3>გაგვიზიარეთ თქვენი გამოცდილება ჩვენს პროდუქტებთან ან მომსახურებასთან დაკავშირებით.</h3>
+                    <p>
+                        აღნიშნული საშუალებას მოგვცემს გავაუმჯობესოთ მომსახურების ხარისხი და ავამაღლოთ თქვენი
+                        კმაყოფილება.
+                    </p>
+
+
+                    <div class="row fr-form-section-holder">
+                        <section class="col-md-12 labeled">
+                            <label>
+                                გაგვიზიარეთ თქვენი შთაბეჭდილება მომსახრებასთან დაკავშირებით: <span>*</span>
+                            </label>
+                        </section>
+                        <section class="col-md-4">
+                            <label>კარგი</label>
+                            <input title="მომსახურება" value="კარგი" class="form-control" type="radio"
+                                   name="impression">
+                        </section>
+                        <section class="col-md-4">
+                            <label>საშუალო</label>
+                            <input title="მომსახურება" value="საშუალო" class="form-control" type="radio"
+                                   name="impression">
+                        </section>
+                        <section class="col-md-4">
+                            <label>ცუდი</label>
+                            <input title="მომსახურება" value="ცუდი" class="form-control" type="radio" name="impression">
+                        </section>
+
+
+                        <section class="col-md-12 labeled">
+                            <label>
+                                გაგვიზიარეთ თქვენი შთაბეჭდილება ფასებთან დაკავშირებით: <span>*</span>
+                            </label>
+                        </section>
+                        <section class="col-md-4">
+                            <label>კარგი</label>
+                            <input title="ფასები" value="კარგი" class="form-control" type="radio" name="price">
+                        </section>
+                        <section class="col-md-4">
+                            <label>საშუალო</label>
+                            <input title="ფასები" value="საშუალო" class="form-control" type="radio" name="price">
+                        </section>
+                        <section class="col-md-4">
+                            <label>ცუდი</label>
+                            <input title="ფასები" value="ცუდი" class="form-control" type="radio" name="price">
+                        </section>
+
+
+                        <section class="col-md-12 labeled">
+                            <label>
+                                გაგვიზიარეთ თქვენი შთაბეჭდილება პროდუქციის ხარისხთან დაკავშირებით: <span>*</span>
+                            </label>
+                        </section>
+                        <section class="col-md-4">
+                            <label>კარგი</label>
+                            <input title="ხარისხი" value="კარგი" class="form-control" type="radio" name="quality">
+                        </section>
+                        <section class="col-md-4">
+                            <label>საშუალო</label>
+                            <input title="ხარისხი" value="საშუალო" class="form-control" type="radio" name="quality">
+                        </section>
+                        <section class="col-md-4">
+                            <label>ცუდი</label>
+                            <input title="ხარისხი" value="ცუდი" class="form-control" type="radio" name="quality">
+                        </section>
+
+
+                        <section class="col-md-12 txArea">
+                            <label><b>კომენტარი: <span>*</span></b></label>
+                            <textarea title="კომენტარი" class="form-control col-md-12"></textarea>
+                        </section>
+                        <section class="col-md-12 success-block" style="text-align: center;margin: 0px; display: none;">
+                            <img src="/images/checked.png" style="height: 50px;">
+                        </section>
+                        <section class="col-md-12">
+                            <button class="btn btn-success col-md-12">გაგზავნა</button>
+                        </section>
+
+                        <script>
+                            jQuery(document).ready(function () {
+                                jQuery(document).on('click', '.btn-success', function (e) {
+                                    e.preventDefault()
+                                    var hasErr = false
+                                    jQuery.each(jQuery(".fr-form-section-holder .form-control"), function (i, v) {
+                                        if (jQuery(v).val() === "") {
+                                            hasErr = true;
+                                        }
+                                    });
+
+                                    if (!hasErr) {
+                                        var table = "<table border='1'>";
+                                        jQuery.each(jQuery(".fr-form-section-holder .form-control"), function (i, v) {
+                                            table += '<tr><td> ' + jQuery(v).attr('title') + ' </td><td>' + jQuery(v).val() + '</td></tr>';
+                                        });
+                                        table += '</table>';
+                                    } else {
+                                        return
+                                    }
+
+                                    jQuery('.btn-success').attr('disabled', true)
+
+
+                                    jQuery.ajax({
+                                        url: 'sendPoll',
+                                        type: 'post',
+                                        contentType: 'application/json',
+                                        data: JSON.stringify({
+                                            body: table
+                                        }),
+                                        complete: function () {
+                                            jQuery('.success-block').show()
+                                            setTimeout(function () {
+                                                window.location.reload()
+                                            }, 3000)
+                                        }
+                                    });
+
+                                })
+                            })
+                        </script>
+                    </div>
+
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div th:replace="baseFooter :: baseFooter" xmlns:th="http://www.w3.org/1999/xhtml"></div>

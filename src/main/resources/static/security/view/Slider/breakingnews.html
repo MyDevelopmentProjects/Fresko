@@ -1,0 +1,91 @@
+<div class="padding">
+    <div class="box">
+        <div class="table-responsive">
+            <div class="box-body b-t">
+                <div class="pull-left">
+                    <button type="button" ng-click="AmfTable.showAddEdit()" class="md-btn md-raised m-b-sm w-xs green">
+                        ახალი <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+                <imperio-search-input></imperio-search-input>
+            </div>
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th width="110px"></th>
+                    <th imperio-sortable-by="id">id</th>
+                    <th imperio-sortable-by="title">დასახელება</th>
+                    <th imperio-sortable-by="startDate">დასაწყისი</th>
+                    <th imperio-sortable-by="endDate">დასასრული</th>
+                    <th imperio-sortable-by="timestamp.created">შეიქმნა</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in data.content">
+                    <td>
+                        <button class="btn btn-icon btn-info" ng-click="AmfTable.showAddEdit(item)">
+                            <i class="fa fa-fw fa-pencil-alt"></i>
+                        </button>
+                        <button class="btn btn-icon btn-danger" ng-model="item"
+                                data-title="წავშალო ჩანაწერი?"
+                                ng-popover-placement="right"
+                                ng-popover-confirm="AmfTable.delete({{item.id}})">
+                            <i class="fa fa-fw fa-trash-alt"></i>
+                        </button>
+                    </td>
+                    <td>{{item.id}}</td>
+                    <td>{{item.title}}</td>
+                    <td>{{item.startDate}}</td>
+                    <td>{{item.endDate}}</td>
+                    <td>{{item.timestamp.created}}</td>
+                </tr>
+                <tr ng-if="!data.content.length" class="text-center">
+                    <td colspan="100" class="warning">ჩანაწერები ვერ მოიძებნა</td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="table">
+                <tfoot class="hide-if-no-paging">
+                <tr>
+                    <td colspan="50" class="text-center">
+                        <imperio-pager></imperio-pager>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div id="showAddEdit" class="modal black-overlay" data-backdrop="false">
+    <div class="modal-dialog modal-lg" ng-form="addEditForm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">{{init.action}}</h5>
+            </div>
+            <div class="modal-body p-lg">
+                <div class="row">
+
+                    <section class="col-md-12">
+                        <div class="form-group">
+                            <label>დასახელება: </label>
+                            <input class="form-control" type="text" placeholder="დასახელება"
+                                   ng-model="object.title" required>
+                        </div>
+                    </section>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn dark-white p-x-md" data-dismiss="modal">დახურვა</button>
+                <button type="button" class="btn danger p-x-md"
+                        ng-disabled="addEditForm.$invalid"
+                        ng-click="AmfTable.save()">
+                    შენახვა
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

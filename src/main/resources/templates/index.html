@@ -1,0 +1,306 @@
+<div th:replace="baseHeader :: baseHeader" xmlns:th="http://www.w3.org/1999/xhtml"></div>
+<div style="width: 100%; padding:20px 20px 0px 20px;">
+    <div class="row">
+        <div class="col-lg-12 mx-auto align-items-center">
+            <article id="post-22" class="post-22 page type-page status-publish">
+                <div class="entry-content">
+                    <div th:if="${slider.size() > 0}" id="carousel" class="carousel slide" data-ride="carousel" data-interval="2000">
+
+                        <div class="carousel-inner">
+                            <div th:each="item, iter : ${slider}"
+                                 class="carousel-item"
+                                 th:classappend="${ (iter.index == 0) ? 'active' : '' }">
+                                <img width="1921" height="1573"
+                                     th:src="@{${'/uploads/' + item.imgUrl}}"
+                                     class="d-block w-100 carousel-image wp-post-image">
+                                <!--<div class="carousel-caption d-block">
+                                    <h3>
+                                        <a  th:text="${item.localizedTitle(#locale)}"></a>
+                                    </h3>
+                                    <p class="d-sm-block d-md-none">
+                                        <a th:text="${item.localizedDescr(#locale)}"></a>
+                                    </p>
+                                    <p class="d-none d-md-block">
+                                        <a th:text="${item.localizedDescr(#locale)}"></a>
+                                    </p>
+                                </div>-->
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </a>
+                        <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </a>
+                    </div>
+
+                </div>
+            </article>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="content col-lg-12 mx-auto align-items-center">
+            <article id="post-23" class="post-22 page type-page status-publish hentry">
+                <div class="entry-content">
+                    <div class="slice type1">
+                        <!--<a href="#">
+                            <h2 class="slice-title" th:text="#{categories}"></h2>
+                        </a>-->
+                        <div class="card-deck">
+                            <div class="card">
+                                <article id="post-110"
+                                         class="post-110 post type-post status-publish format-standard has-post-thumbnail hentry category-world tag-dolor tag-ipsum tag-lorem tag-sit">
+                                    <a th:href="${'/products?lang=' + #locale}"><img width="768" height="523"
+                                                                                       src="images/promotions.jpg"
+                                                                                       class="card-img-top wp-post-image"></a>
+                                    <div class="card-body">
+                                        <h3 class="card-title"><a th:href="${'/products?lang=' + #locale}"
+                                                                  th:text="#{page.home.promotions}">
+                                        </a></h3>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </article>
+                            </div>
+                            <!-- /.card -->
+                            <div class="card">
+                                <article id="post-108"
+                                         class="post-108 post type-post status-publish format-standard has-post-thumbnail hentry category-world tag-dolor tag-ipsum tag-lorem tag-sit">
+                                    <a th:href="${'/sales?lang=' + #locale}"><img width="768" height="521"
+                                                                                  src="images/salescards.jpg"
+                                                                                  class="card-img-top wp-post-image"></a>
+                                    <div class="card-body">
+                                        <h3 class="card-title"><a th:href="${'/sales?lang=' + #locale}"
+                                                                  th:text="#{salescards}"></a></h3>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </article>
+                            </div>
+                            <!-- /.card -->
+                            <div class="card">
+                                <article id="post-106"
+                                         class="post-106 post type-post status-publish format-standard has-post-thumbnail hentry category-world tag-dolor tag-ipsum tag-lorem tag-sit">
+                                    <a th:href="${'/corporateSales?lang=' + #locale}"><img width="768" height="510"
+                                                                                           src="images/corporate.jpg"
+                                                                                           class="card-img-top wp-post-image"></a>
+                                    <div class="card-body">
+                                        <h3 class="card-title"><a th:href="${'/corporateSales?lang=' + #locale}"
+                                                                  th:text="#{coprsales}"></a></h3>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </article>
+                            </div>
+                            <!-- /.card -->
+                            <div class="card">
+                                <article id="post-103"
+                                         class="post-103 post type-post status-publish format-standard has-post-thumbnail hentry category-world tag-dolor tag-ipsum tag-lorem tag-sit">
+                                    <a th:href="@{'/about-us/' + #{qualityMgt}} + '-8?lang=' + ${#locale}">
+                                        <img width="768" height="1055" src="images/quaility.jpg" class="card-img-top wp-post-image">
+                                    </a>
+                                    <div class="card-body">
+                                        <h3 class="card-title">
+                                            <a th:href="@{'/about-us/' + #{qualityMgt}} + '-8?lang=' + ${#locale}"
+                                               th:text="#{qualityMgt}"></a></h3>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </article>
+                            </div>
+                            <!-- /.card -->
+                            <div class="card">
+                                <article id="post-101"
+                                         class="post-101 post type-post status-publish format-standard has-post-thumbnail hentry category-world tag-dolor tag-ipsum tag-lorem tag-sit">
+                                    <a th:href="${'/recipes?lang=' + #locale}"><img width="768" height="512"
+                                                                                    src="images/receips.jpg"
+                                                                                    class="card-img-top wp-post-image"
+                                                                                    alt=""></a>
+                                    <div class="card-body">
+                                        <h3 class="card-title"><a th:href="${'/recipes?lang=' + #locale}"
+                                                                  th:text="#{receips}">
+                                        </a></h3>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </article>
+                            </div>
+                            <!-- /.card -->
+                            <div class="card">
+                                <article id="post-99"
+                                         class="post-99 post type-post status-publish format-standard has-post-thumbnail hentry category-world tag-dolor tag-ipsum tag-lorem tag-sit">
+                                    <a th:href="${'/advatfresco?lang=' + #locale}">
+                                        <img width="768" height="512" src="images/adv.jpg" class="card-img-top wp-post-image">
+                                    </a>
+                                    <div class="card-body">
+                                        <h3 class="card-title">
+                                            <a th:href="${'/advatfresco?lang=' + #locale}" th:text="#{advatfresco}"></a>
+                                        </h3>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </article>
+                            </div>
+                            <!-- /.card -->
+
+                            <!-- /.card -->
+                            <div class="card">
+                                <article id="post-100"
+                                         class="post-99 post type-post status-publish format-standard has-post-thumbnail hentry category-world tag-dolor tag-ipsum tag-lorem tag-sit">
+                                    <a th:href="${'/bestEmpl?lang=' + #locale}">
+                                        <img width="768" height="512" src="images/hero-compendium-employers.jpg"
+                                             class="card-img-top wp-post-image"></a>
+                                    <div class="card-body">
+                                        <h3 class="card-title"><a th:href="${'/bestEmpl?lang=' + #locale}"
+                                                                  th:text="#{bestEmpl}">
+                                        </a></h3>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </article>
+                            </div>
+                            <!-- /.card -->
+
+                            <!-- /.card -->
+                            <div class="card">
+                                <article id="post-102"
+                                         class="post-99 post type-post status-publish format-standard has-post-thumbnail hentry category-world tag-dolor tag-ipsum tag-lorem tag-sit">
+                                    <a th:href="${'/poll?lang=' + #locale}">
+                                        <img width="768" height="512"
+                                             src="images/poll.jpg"
+                                             class="card-img-top wp-post-image" />
+                                    </a>
+                                    <div class="card-body">
+                                        <h3 class="card-title"><a th:href="${'/poll?lang=' + #locale}"
+                                                                  th:text="#{page.home.poll}">
+                                        </a></h3>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </article>
+                            </div>
+                            <!-- /.card -->
+
+                            <!-- /.card -->
+                            <div class="card">
+                                <article id="post-1011"
+                                         class="post-99 post type-post status-publish format-standard has-post-thumbnail hentry category-world tag-dolor tag-ipsum tag-lorem tag-sit">
+                                    <a th:href="${'/tenders?lang=' + #locale}">
+                                        <img width="768" height="512"
+                                             src="images/tender.jpg"
+                                             class="card-img-top wp-post-image" />
+                                    </a>
+                                    <div class="card-body">
+                                        <h3 class="card-title">
+                                            <a th:href="${'/tenders?lang=' + #locale}" th:text="#{page.home.tenders}"></a>
+                                        </h3>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </article>
+                            </div>
+                            <!-- /.card -->
+
+                        </div>
+                        <!-- /.card-deck -->
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+</div>
+
+<nav class="fixed-block-bar">
+    <ul class="fixed-menu">
+        <li>
+            <i class="fixed-menu-phone-first fa fa-phone"></i>
+            <div class="fixed-menu-phone">
+                2 907 907
+            </div>
+        </li>
+        <li>
+            <a th:href="${'/contact?lang=' + #locale}" target="_blank">
+                <i class="fa fa-info-circle"></i>
+            </a>
+        </li>
+        <li>
+            <a href="https://www.facebook.com/FrescoRetailGroup/" target="_blank">
+                <i class="fa fa-facebook"></i>
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<script>
+    jQuery(document).ready(function () {
+        jQuery('.fixed-menu-phone-first').hover(
+            function () {
+                jQuery('.fixed-menu-phone').css('left', '65px')
+            }
+        );
+
+        jQuery('.fixed-menu-phone-first').mouseout(
+            function () {
+                jQuery('.fixed-menu-phone').css('left', '-100px')
+            }
+        );
+    })
+</script>
+
+<style>
+
+    .fixed-menu-phone {
+        background: #f9f9f9;
+        width: 100px;
+        z-index: 1000000;
+        position: absolute;
+        left: -100px;
+        top: 1px;
+        height: 58px;
+        border-radius: 4px;
+        line-height: 58px;
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+    .fixed-block-bar {
+        position: fixed;
+        left: 0;
+        top: 244px;
+        -moz-box-shadow: 3px 0px 0px 0px #eaeeef;
+        -webkit-box-shadow: 3px 0px 0px 0px #eaeeef;
+        box-shadow: 1px -1px 9px 0px #eaeeef;
+        background: #68b935;
+        width: 61px;
+        -moz-border-radius-topright: 10px;
+        -webkit-border-top-right-radius: 10px;
+        border-top-right-radius: 10px;
+        -moz-border-radius-bottomright: 10px;
+        -webkit-border-bottom-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+    .fixed-menu {
+        list-style: none;
+        overflow: hidden;
+        cursor: pointer;
+        padding-left: 13px;
+        margin-bottom: 0 !important;
+        margin-top: 16px;
+    }
+
+    .fixed-menu li {
+        cursor: pointer;
+        height: 40px;
+        width: 34px;
+        border-bottom: 1px solid #e1e1e1;
+        margin-bottom: 16px;
+        text-align: center;
+    }
+
+    .fixed-menu li i:hover {
+        color: #2d65ff;
+    }
+
+    .fixed-menu li i {
+        color: #e9e9e9;
+        font-size: 29px;
+    }
+
+</style>
+
+<div th:replace="baseFooter :: baseFooter" xmlns:th="http://www.w3.org/1999/xhtml"></div>

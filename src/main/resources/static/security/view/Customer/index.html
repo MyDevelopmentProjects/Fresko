@@ -1,0 +1,64 @@
+<div class="padding">
+    <div class="box">
+        <div class="table-responsive">
+            <div class="box-body b-t">
+                <div class="pull-left">
+                    <button type="button" ng-click="showAddEdit()" class="md-btn md-raised m-b-sm w-xs green">
+                        New <i class="fa fa-plus"></i>
+                    </button>
+                </div>
+                <imperio-search-input></imperio-search-input>
+            </div>
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th width="110px"></th>
+                    <th imperio-sortable-by="fullName">
+                        სრული სახელი
+                    </th>
+                    <th imperio-sortable-by="displayName">
+                        ტელ.ნომერი
+                    </th>
+                    <th>
+                        APP_TOKEN
+                    </th>
+                    <th imperio-sortable-by="blocked">
+                        დაბლოკილი
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in data.content">
+                    <td>
+                        <button class="btn btn-icon btn-info" ng-click="showAddEdit(item)">
+                            <i class="fa fa-fw fa-pencil-alt"></i>
+                        </button>
+                        <button class="btn btn-icon btn-danger" ng-model="item"
+                                data-title="წავშალო ჩანაწერი?"
+                                ng-popover-placement="right"
+                                ng-popover-confirm="delete({{item.id}})">
+                            <i class="fa fa-fw fa-trash-alt"></i>
+                        </button>
+                    </td>
+                    <td>{{item.fullName}}</td>
+                    <td>{{item.phoneNumber}}</td>
+                    <td>{{item.appToken}}</td>
+                    <td>{{item.blocked}}</td>
+                </tr>
+                <tr ng-if="!data.content.length" class="text-center">
+                    <td colspan="100" class="warning">ჩანაწერები ვერ მოიძებნა</td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="table">
+                <tfoot class="hide-if-no-paging">
+                <tr>
+                    <td colspan="50" class="text-center">
+                        <imperio-pager></imperio-pager>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>

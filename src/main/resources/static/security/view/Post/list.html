@@ -1,0 +1,266 @@
+<div class="padding" style="padding-bottom: 0; display: none;">
+    <div class="box">
+        <div class="table-responsive">
+            <div class="b-t">
+                <div class="pull-left">
+                    <button type="button" style="margin: 8px; width: auto; background: #000;"
+                            ng-click="getList()"
+                            ng-model="selectedCat"
+                            class="md-btn md-raised m-b-sm w-xs green">
+                        ყველა
+                    </button>
+                    <button ng-repeat="item in categories" type="button" style="margin: 8px; width: auto; background: {{item.color}}"
+                            ng-click="getList(item)"
+                            ng-model="selectedCat"
+                            class="md-btn md-raised m-b-sm w-xs green">
+                        {{item.title}}
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="padding" id="list-of-items">
+    <div class="box">
+        <div class="table-responsive">
+            <div class="box-body b-t">
+                <div class="pull-left">
+                    <label class="md-check">
+                        <input type="checkbox" ng-model="isInBulkMode" ng-change="bulkStateChanged()">
+                        <i class="blue"></i>
+                    </label>
+                    <button ng-if="isInBulkMode" type="button" ng-click="bulkDelete()" class="md-btn md-raised m-b-sm w-xs red" style="width: auto;">
+                        მონიშნულის წაშლა&nbsp;&nbsp;<i class="fa fa-trash"></i>
+                    </button>
+                    <button type="button" ng-click="AmfTable.showAddEdit()" class="md-btn md-raised m-b-sm w-xs green">
+                        ახალი <i class="fa fa-plus"></i>
+                    </button>
+                    <h5 style="float: right;margin-left: 20px;margin-top: 4px;">
+                        არჩეული ფილტრი:
+                        <b style="color: {{ selectedCat == '' ? '#000' : selectedCat.color }}">{{selectedCat == '' ? 'ყველა' : selectedCat.title}}</b>
+                    </h5>
+                </div>
+                <imperio-search-input></imperio-search-input>
+            </div>
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th ng-if="isInBulkMode" width="50px"></th>
+                    <th width="110px"></th>
+                    <th width="50px" imperio-sortable-by="id">id</th>
+                    <th imperio-sortable-by="title">დასახელება</th>
+                    <th imperio-sortable-by="category.id">კატეგორია</th>
+                    <th imperio-sortable-by="timestamp.created">თარიღი</th>
+                    <th imperio-sortable-by="active">ჩართულია</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in data.content">
+                    <td ng-if="isInBulkMode">
+                        <label class="md-check">
+                            <input type="checkbox" class="selectedPostId" data-id="{{item.id}}">
+                            <i class="blue"></i>
+                        </label>
+                    </td>
+                    <td>
+                        <button class="btn btn-icon btn-info" ng-click="AmfTable.showAddEdit(item)">
+                            <i class="fa fa-fw fa-pencil-alt"></i>
+                        </button>
+                        <button class="btn btn-icon btn-danger" ng-model="item"
+                                data-title="წავშალო ჩანაწერი?"
+                                ng-popover-placement="right"
+                                ng-popover-confirm="AmfTable.delete({{item.id}})">
+                            <i class="fa fa-fw fa-trash-alt"></i>
+                        </button>
+                    </td>
+                    <td>{{item.id}}</td>
+                    <td>{{item.title}}</td>
+                    <td>{{item.category.title}}</td>
+
+                    <td ng-bind="item.timestamp.created | date:'dd-MM-yyyy hh:mm'"></td>
+                    <td>
+                        <label class="md-check">
+                            <input type="checkbox" ng-model="item.active" disabled readonly>
+                            <i class="blue"></i>
+                        </label>
+                    </td>
+                </tr>
+                <tr ng-if="!data.content.length" class="text-center">
+                    <td colspan="100" class="warning">ჩანაწერები ვერ მოიძებნა</td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="table">
+                <tfoot class="hide-if-no-paging">
+                <tr>
+                    <td colspan="50" class="text-center">
+                        <imperio-pager></imperio-pager>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="padding" id="showAddEdit" style="display: none;">
+    <div class="box">
+
+        <div class="table-responsive">
+            <div class="box-body b-t">
+                <div class="pull-left">
+                    <h5 class="modal-title">{{init.action}} - {{object.id}}</h5>
+                </div>
+                <div class="pull-right" style="margin-bottom: 15px;">
+                    <button type="button" class="btn danger p-x-md"
+                            ng-disabled="addEditForm.$invalid"
+                            ng-click="AmfTable.uploadAndSave()">
+                        შენახვა
+                    </button>
+                    <button type="button" class="btn dark-white p-x-md" ng-click="toggle()">დახურვა</button>
+                </div>
+            </div>
+
+
+            <div class="col col-md-12">
+                <div class="row">
+                    <div class="nav-active-border b-primary top box">
+                        <div class="nav nav-md" ui-nav>
+                            <a class="nav-link" href data-toggle="tab" data-target="#page-1">
+                                ძირითადი
+                            </a>
+                            <a class="nav-link" href data-toggle="tab" data-target="#page-2">
+                                დეტალები
+                            </a>
+                            <a class="nav-link" href data-toggle="tab" data-target="#page-3">
+                                ფოტო
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col col-md-12" style="padding: 20px;">
+                <div class="row">
+                    <div class="tab-content">
+                        <div class="tab-pane animated fadeIn active" id="page-1">
+                            <section class="col-md-4">
+                                <div class="form-group">
+                                    <input class="form-control" type="text" placeholder="დასახელება(KA)"
+                                           ng-model="object.title" required>
+                                </div>
+                            </section>
+                            <section class="col-md-4">
+                                <div class="form-group">
+                                    <input class="form-control" type="text" placeholder="დასახელება(EN)"
+                                           ng-model="object.titleEn" required>
+                                </div>
+                            </section>
+                            <section class="col-md-4">
+                                <div class="form-group">
+                                    <input class="form-control" type="text" placeholder="დასახელება(RU)"
+                                           ng-model="object.titleRu" required>
+                                </div>
+                            </section>
+                            <section class="col-md-4">
+                                <div class="form-group">
+                                    <textarea id="edit"></textarea>
+                                </div>
+                            </section>
+                            <section class="col-md-4">
+                                <div class="form-group">
+                                    <textarea id="editEn"></textarea>
+                                </div>
+                            </section>
+                            <section class="col-md-4">
+                                <div class="form-group">
+                                    <textarea id="editRu"></textarea>
+                                </div>
+                            </section>
+                        </div>
+                        <div class="tab-pane animated fadeIn" id="page-2">
+
+                            <section class="col-md-4">
+                                <!--<section class="col-md-12">
+                                    <div class="form-group">
+                                        <label>აირჩიეთ კატეგორია: </label>
+                                        <select class="form-control c-select"
+                                                ng-model="object.category.id"
+                                                ng-options="item.id as item.title for item in categories"
+                                                required>
+                                            <option value='' selected="selected" disabled>- აირჩიეთ კატეგორია -
+                                            </option>
+                                        </select>
+                                    </div>
+                                </section>-->
+                                <!--<section class="col-md-12">
+                                    <div class="form-group">
+                                        <label>ნახვების #: </label>
+                                        <input class="form-control" type="number" placeholder="ნახვების #"
+                                               ng-model="object.numberOfViews">
+                                    </div>
+                                </section>-->
+                                <section class="col-md-12">
+                                    <label>შექმნის თარიღი: </label>
+                                    <section>
+                                        <div class="input-group date form_datetime"
+                                             data-date="{{object.timestamp.created}}"
+                                             data-date-format="yyyy-mm-ddTHH:ii:ss.287+0000"
+                                             data-link-field="dtp_input1">
+                                            <input class="form-control" ng-model="object.timestamp.created"
+                                                   size="16"
+                                                   type="text"
+                                                   value="" readonly>
+                                            <span class="input-group-addon"><span
+                                                    class="glyphicon glyphicon-remove"></span></span>
+                                            <span class="input-group-addon"><span
+                                                    class="glyphicon glyphicon-th"></span></span>
+                                        </div>
+                                        <input type="hidden" id="dtp_input1"
+                                               ng-model="object.timestamp.created"/>
+                                    </section>
+                                </section>
+                                <section class="col-md-12">
+                                    <br/>
+                                </section>
+                                <section class="col-md-12">
+                                    <label class="md-check">
+                                        <input type="checkbox" ng-model="object.active">
+                                        <i class="blue"></i>
+                                        აქტიური
+                                    </label>
+                                </section>
+                            </section>
+                            <section class="col-md-6">
+                                <label>აირჩიეთ სეექცია: </label>
+                                <div class="row">
+                                    <section class="col-md-6" ng-repeat="section in sections">
+                                        <label class="md-check">
+                                            <input type="checkbox"
+                                                   inpId="{{section.id}}"
+                                                   class="sectionCheckbox"
+                                                   ng-checked="inSection(section.id)">
+                                            <i class="blue"></i>
+                                            {{section.translated}}
+                                        </label>
+                                    </section>
+                                </div>
+                            </section>
+
+                        </div>
+                        <div class="tab-pane animated fadeIn" id="page-3">
+                            <section class="col-md-12 margin">
+                                <div class="row">
+                                    <imperio-file-uploader-input></imperio-file-uploader-input>
+                                    <img ng-if="object.imgUrls" style="height: 250px;" ng-src="{{showImage()}}"/>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</div>

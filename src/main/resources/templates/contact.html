@@ -1,0 +1,151 @@
+<div th:replace="baseHeader :: baseHeader" xmlns:th="http://www.w3.org/1999/xhtml"></div>
+
+<div class="container">
+
+
+    <div class="row" style="border-top: solid 1px #cfcfcf;
+    padding-top: 25px;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #cfcfcf;
+    padding-bottom: 30px;">
+
+        <div class="content col-lg-6 mx-auto align-items-center contact-data">
+
+            <article class="post-284 page type-page status-publish hentry contact-locations">
+                <div data-id="0">
+                    <a href="javascript:void(0)" src="/images/contact/varketili.jpg">ვარკეთილი -კალოუბნის ქ. #9</a>
+                </div>
+                <div data-id="1">
+                    <a href="javascript:void(0)" src="/images/contact/muxiani.jpg">მუხიანი - გობრონიძის ქ. #18</a>
+                </div>
+                <div data-id="2">
+                    <a href="javascript:void(0)" src="/images/contact/gldani.jpg">გლდანი - ხიზანიშლის ქ. #57</a>
+                </div>
+                <div data-id="3">
+                    <a href="javascript:void(0)" src="/images/contact/isani.jpg">ისანი - ბერი გაბრიელ სალოსის ქ.
+                        #42</a>
+                </div>
+                <div data-id="4">
+                    <a href="javascript:void(0)" src="/images/contact/ortachala.jpg">ორთაჭალა - გორგასლის ქ. #61</a>
+                </div>
+                <div data-id="5">
+                    <a href="javascript:void(0)" src="/images/contact/saburtalo.jpg">საბურთალო - სანდრო ეულის ქ.
+                        #13</a>
+                </div>
+                <div data-id="6">
+                    <a href="javascript:void(0)" src="/images/contact/guramisvhili.jpg">სანზონა - გურამიშვილის ქ.
+                        #64</a>
+                </div>
+                <div data-id="7">
+                    <a href="javascript:void(0)" src="/images/contact/chiqobava.jpg">ჩუღურეთი - ჩიქობავას ქ. #22</a>
+                </div>
+            </article>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="contact-data">
+                <img class="contactImage" style="width: 100%;" src="/images/contact/varketili.jpg">
+            </div>
+        </div>
+
+        <script>
+            jQuery(document).ready(function () {
+                jQuery('.contact-locations a').hover(
+                    function () {
+                        jQuery('.contactImage').prop('src', jQuery(this).attr('src'))
+                        jQuery('.hoveredRow').removeClass('hoveredRow')
+                        jQuery('.hoveredRowGray').removeClass('hoveredRowGray')
+                        var id = jQuery(jQuery(this).parent()).data('id')
+                        if (parseInt(id) % 2 === 0) {
+                            jQuery(jQuery(this).parent()).addClass('hoveredRow')
+                        } else {
+                            jQuery(jQuery(this).parent()).addClass('hoveredRowGray')
+                        }
+
+                    }
+                );
+
+                jQuery('.contact-locations a').mouseout(
+                    function () {
+                        jQuery('.hoveredRow').removeClass('hoveredRow')
+                        jQuery('.hoveredRowGray').removeClass('hoveredRowGray')
+                    }
+                );
+            })
+        </script>
+
+    </div>
+
+    <div class="row">
+
+        <div class="content col-lg-6 mx-auto align-items-center" style="margin-bottom: -10px">
+
+            <article id="post-284" class="post-284 page type-page status-publish hentry">
+
+                <h2 class="page-title">კონტაქტი</h2>
+                <div class="entry-content">
+
+                    <div role="form" class="wpcf7" id="wpcf7-f410-p284-o1" lang="en-US" dir="ltr">
+                        <div class="screen-reader-response"></div>
+
+                        <form action="/demo/neori/contact/#wpcf7-f410-p284-o1" method="post" class="wpcf7-form"
+                              novalidate="novalidate">
+
+                            <p><label> სახელი, გვარი<br>
+                                <span class="wpcf7-form-control-wrap your-name"><input type="text" name="your-name"
+                                                                                       value="" size="40"
+                                                                                       class="wpcf7-form-control wpcf7-text wpcf7-validates-as-required"
+                                                                                       aria-required="true"
+                                                                                       aria-invalid="false"></span>
+                            </label></p>
+
+                            <p><label> ელ.ფოსტა<br>
+                                <span class="wpcf7-form-control-wrap your-email"><input type="email" name="your-email"
+                                                                                        value="" size="40"
+                                                                                        class="wpcf7-form-control wpcf7-text wpcf7-email wpcf7-validates-as-required wpcf7-validates-as-email"
+                                                                                        aria-required="true"
+                                                                                        aria-invalid="false"></span>
+                            </label></p>
+
+                            <p><label> მესიჯი<br>
+                                <span class="wpcf7-form-control-wrap your-message"><textarea name="your-message"
+                                                                                             cols="20" rows="2"
+                                                                                             class="wpcf7-form-control wpcf7-textarea"
+                                                                                             aria-invalid="false"></textarea></span>
+                            </label></p>
+                            <p><input type="submit" value="გაგზავნა" class="wpcf7-form-control wpcf7-submit"><span
+                                    class="ajax-loader"></span></p>
+                            <div class="wpcf7-response-output wpcf7-display-none"></div>
+                        </form>
+                    </div>
+
+
+                </div><!-- /.entry-content -->
+
+            </article>
+
+        </div>
+        <div class="col-lg-6">
+            <div class="contact-data"  style="text-align: right;margin-top: 16px;">
+                <p><b>ოფისი:</b> +995 322 907 907</p>
+                <p><b>ცხელი ხაზი:</b> 577 65 99 02</p>
+                <p><b>ელ-ფოსტა:</b> info@fresco.ge</p>
+                <p>თუ გსურთ, გახდეთ ფრესკოს მომწოდებელი, დაგვიკავშირდით:</p>
+                <p>კომერციული დეპარტამენტი</p>
+                <p>+995 322 907 907 (261)</p>
+            </div>
+        </div>
+
+    </div><!-- /.row -->
+
+
+    <div class="row"
+         style="background: url(/images/contact/map.png);background-size: cover;background-repeat: no-repeat;background-position: 10px;margin-bottom: 32px;">
+        <section style="height: 250px;">
+
+        </section>
+    </div>
+
+</div>
+
+<div th:replace="baseFooter :: baseFooter" xmlns:th="http://www.w3.org/1999/xhtml"></div>

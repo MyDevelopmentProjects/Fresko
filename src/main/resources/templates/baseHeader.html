@@ -1,0 +1,132 @@
+<baseHeader th:fragment="baseHeader" xmlns:th="http://www.w3.org/1999/xhtml">
+    <!DOCTYPE html>
+    <html lang="en-US">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <title th:text="${title}"></title>
+        <link rel="stylesheet" id="contact-form-7-css" href="/css/styles.css" type="text/css" media="all">
+        <link rel="stylesheet" id="neori-style-css" href="/css/style.css" type="text/css" media="all">
+        <link rel="stylesheet" id="bootstrap-css-css" href="/css/bootstrap.min.css" type="text/css" media="all">
+        <link rel="stylesheet" id="neori-modified-bootstrap-css-css" href="/css/modified-bootstrap.css" type="text/css"
+              media="all">
+        <link rel="stylesheet" id="fontawesome-css" href="/css/font-awesome.min.css" type="text/css" media="all">
+        <link rel="stylesheet" id="simple-line-icons-css" href="/css/simple-line-icons.css" type="text/css" media="all">
+        <link rel="stylesheet" id="neori-fonts-css" href="/css/css.css" type="text/css" media="all">
+        <script type="text/javascript" src="/js/jquery.js"></script>
+        <script type="text/javascript" src="/js/jquery-migrate.min.js"></script>
+    </head>
+    <body class="home page-template page-template-page-notitle page-template-page-notitle-php page page-id-22">
+    <baseHeader id="page" class="site">
+
+        <div class="top-header" id="myHeader">
+            <header>
+                <div class="header-lower">
+                    <nav class="main-navigation">
+                        <div class="menu-menu1-container">
+                            <ul id="menu-menu1-1" class="menu">
+                                <li>
+                                    <a href="/?lang=ka">
+                                        <img src="/images/logo.png"/>
+                                    </a>
+                                </li>
+                                <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor menu-item-9">
+                                    <a th:href="${'/?lang=' + #locale}" th:text="#{page.home.title}"></a>
+                                </li>
+                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-has-children menu-item-10">
+                                    <a href="javascript:void(0)" th:text="#{page.home.aboutus}"></a>
+                                    <ul class="sub-menu">
+                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15">
+                                            <a th:href="@{'/about-us/' + #{page.home.aboutus.history}} + '-1'"
+                                               th:text="#{page.home.aboutus.history}"></a>
+                                        </li>
+                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15">
+                                            <a th:href="@{'/about-us/' + #{page.home.aboutus.mission}} + '-2'"
+                                               th:text="#{page.home.aboutus.mission}"></a>
+                                        </li>
+                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15">
+                                            <a th:href="@{'/about-us/' + #{page.home.aboutus.values}} + '-3'"
+                                               th:text="#{page.home.aboutus.values}"></a>
+                                        </li>
+                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15">
+                                            <a th:href="@{'/about-us/' + #{page.home.aboutus.markets}} + '-4'"
+                                               th:text="#{page.home.aboutus.markets}"></a>
+                                        </li>
+                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15">
+                                            <a th:href="@{'/about-us/' + #{page.home.aboutus.mgt}} + '-6'"
+                                               th:text="#{page.home.aboutus.mgt}"></a>
+                                        </li>
+                                        <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-15">
+                                            <a th:href="${'/mediaAboutUs?lang=' + #locale}" th:text="#{page.home.aboutus.media}"></a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-11">
+                                    <a th:href="${'/charitableFoundation?lang=' + #locale}"
+                                       th:text="#{page.home.charitablefoundation}"></a>
+                                </li>
+                                <li class="neori-mega-menu menu-item menu-item-type-taxonomy menu-item-object-category menu-item-475">
+                                    <a th:href="${'/news?lang=' + #locale}" th:text="#{page.home.news}"></a>
+                                </li>
+                                <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-11">
+                                    <a th:href="${'/gallery?lang=' + #locale}" th:text="#{page.home.gallery}"></a>
+                                </li>
+                                <li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-ancestor current-menu-parent menu-item-11">
+                                    <a th:href="@{'/about-us/' + #{page.home.career}} + '-5'"
+                                       th:text="#{page.home.career}"></a>
+                                </li>
+                                <li class="neori-mega-menu menu-item menu-item-type-taxonomy menu-item-object-category menu-item-476">
+                                    <a th:href="${'/contact?lang=' + #locale}" th:text="#{page.home.contact}"></a>
+                                </li>
+
+                                <li>
+                                    <a href="/?lang=ka"><img src="/images/ic_flag_geo.png" style="height: 25px;"/></a>
+                                    <a href="/?lang=en"><img src="/images/ic_flag_us.png" style="height: 27px;"/></a>
+                                    <a href="/?lang=ru"><img src="/images/ic_flag_russia.png"
+                                                             style="height: 25px;"/></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>
+                    <div class="offcanvas-navigation">
+                        <div class="menu-menu1-container">
+                            <ul id="menu-menu1-2" class="menu">
+                                <a href="/?lang=ka" style="display: flex;justify-content: center;height: 70px;">
+                                    <img src="/images/logo.png" style="width: 200px;"/>
+                                </a>
+                                <li style="text-align: center;">
+                                    <a href="/?lang=ka"><img src="/images/ic_flag_geo.png" style="height: 35px;"/></a>
+                                    <a href="/?lang=en"><img src="/images/ic_flag_us.png" style="height: 37px;"/></a>
+                                    <a href="/?lang=ru"><img src="/images/ic_flag_russia.png"
+                                                             style="height: 35px;"/></a>
+                                </li>
+
+                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14">
+                                    <a th:href="${'/?lang=' + #locale}" th:text="#{page.home.title}"></a>
+                                </li>
+                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14"><a
+                                        th:href="${'/career?lang=' + #locale}" th:text="#{page.home.career}"></a></li>
+                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14"><a
+                                        th:href="${'/charitableFoundation?lang=' + #locale}"
+                                        th:text="#{page.home.charitablefoundation}"></a></li>
+                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-14"><a
+                                        th:href="${'/news?lang=' + #locale}" th:text="#{page.home.news}"></a></li>
+                                <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-12"><a
+                                        th:href="${'/aboutUs?lang=' + #locale}" th:text="#{page.home.aboutus}"></a></li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-286"><a
+                                        th:href="${'/gallery?lang=' + #locale}" th:text="#{page.home.gallery}"></a></li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-286"><a
+                                        th:href="${'/poll?lang=' + #locale}" th:text="#{page.home.poll}"></a></li>
+                                <li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-286"><a
+                                        th:href="${'/contact?lang=' + #locale}" th:text="#{page.home.contact}"></a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="offcanvas-menu-button"><i class="fa fa-bars"></i></div>
+    </baseHeader>

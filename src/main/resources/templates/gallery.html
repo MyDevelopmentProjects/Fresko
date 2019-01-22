@@ -1,0 +1,84 @@
+<div th:replace="baseHeader :: baseHeader" xmlns:th="http://www.w3.org/1999/xhtml"></div>
+<link href="/css/lightgallery.css" rel="stylesheet">
+<div class="container" style="margin-top: 16px;">
+    <div class="row sr" style="background: #f2f2f2;padding: 20px;margin-bottom: 20px;">
+        <div class="col-md-12">
+            <h2 class="slice-title" th:text="${title}"></h2>
+            <article class="post-91">
+                <div style="margin-top: 20px;padding-left: 20px; margin-bottom: 20px;" class="entry-content">
+
+                    <div class="demo-gallery">
+                        <ul id="lightgallery" class="list-unstyled row" th:if="${obj == null}"></ul>
+
+                        <h1  th:if="${obj != null && obj.title != null}" th:text="${obj.localizedTitle(#locale)}"></h1>
+                        <p  th:if="${obj != null && obj.descr != null}"  th:utext="${obj.localizedDescr(#locale)}"></p>
+
+                        <ul id="lightgallery" class="list-unstyled row lazyImages" th:if="${obj != null}" th:src="${obj.images}"></ul>
+                    </div>
+                    <script type="text/javascript" th:if="${obj != null}">
+                        jQuery(document).ready(function(){
+
+                            jQuery.each(jQuery('.lazyImages'), function (i,obj) {
+                                if (obj) {
+                                    var src = jQuery(obj).attr('src')
+                                    if (src) {
+
+                                        if (src.indexOf('\\') > -1) {
+                                            src = JSON.parse(src.replace(/\\/g, ""))
+                                        }
+
+                                        var imgs = src;
+
+                                        if (imgs && imgs.length > 0) {
+                                            for (var i = 0; i < imgs.length; i++) {
+                                                var html =
+                                                    '<li style="margin-top: 10px;" class="col-xs-6 col-sm-4 col-md-3" data-src="/uploads/'+imgs[i]+'" data-sub-html="">' +
+                                                    '<a href="">' +
+                                                    '<img class="img-responsive" src="/uploads/'+imgs[i]+'">' +
+                                                    '</a>' +
+                                                    '</li>';
+                                                jQuery('#lightgallery').append(html)
+                                            }
+                                            jQuery('#lightgallery').lightGallery();
+                                        }
+                                    }
+                                }
+                            })
+
+                        });
+                    </script>
+                    <script type="text/javascript" th:if="${obj == null}">
+                        jQuery(document).ready(function(){
+                            jQuery.get('/gallery/list?size=100', function (resp) {
+                                for (var i = 0; i < resp.content.length; i++) {
+                                    var content = resp.content[i];
+
+                                    if (content.images.indexOf('\\') > -1) {
+                                        content.images = JSON.parse(content.images.replace(/\\/g, ""))
+                                    }
+
+                                    var imgs = content.images;
+
+                                    var html =
+                                        '<li style="margin-top: 10px;" class="col-xs-6 col-sm-4 col-md-3" data-src="/uploads/'+imgs[0]+'" data-sub-html="">' +
+                                            '<a href="/gallery/'+ content.id +'">' +
+                                                '<img class="img-responsive" src="/uploads/'+imgs[0]+'">' +
+                                            '</a>' +
+                                            '<h3 style="    font-size: 16px; margin-top: 6px;"> ' + content.title + ' </h3>' +
+                                        '</li>';
+                                    jQuery('#lightgallery').append(html)
+                                }
+                            })
+                        });
+                    </script>
+
+                </div>
+            </article>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/picturefill/2.3.1/picturefill.min.js"></script>
+<script src="/js/lightgallery-all.min.js"></script>
+<script src="/js/jquery.mousewheel.min.js"></script>
+
+<div th:replace="baseFooter :: baseFooter" xmlns:th="http://www.w3.org/1999/xhtml"></div>

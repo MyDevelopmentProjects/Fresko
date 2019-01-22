@@ -1,0 +1,6 @@
+.redactor_toolbar li a.re-fileupload {
+	background-image: url(data:image/gif;base64,R0lGODlhEQAPAIAAAERERP///yH5BAEAAAEALAAAAAARAA8AAAIjjG+Ay+AMnYRIWprsw1nxM32dOJJh45XZCm6sS23afAX0HRQAOw==);
+}
+.redactor_toolbar li a.re-fileupload:hover {
+	background-image: url(data:image/gif;base64,R0lGODlhEQAPAIAAAP///////yH5BAEAAAEALAAAAAARAA8AAAIjjG+Ay+AMnYRIWprsw1nxM32dOJJh45XZCm6sS23afAX0HRQAOw==);
+}

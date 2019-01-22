@@ -1,0 +1,23 @@
+<div th:replace="baseHeader :: baseHeader" xmlns:th="http://www.w3.org/1999/xhtml"></div>
+
+<div class="single-thumbnail" th:style="'background-image: url(/uploads/' + @{${post.imgUrls}} + ')'">
+    <div class="container">
+        <div class="single-thumbnail-inside row align-items-end">
+            <div class="single-title-zone ws-sr col">
+                <h1 th:text="${title}"></h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="margin-top: 16px;">
+    <div class="row sr" style="background: #f2f2f2;padding: 20px;margin-bottom: 20px;">
+        <div class="col-md-12">
+            <article class="post-91">
+                <div style="margin-top: 20px;padding-left: 20px; margin-bottom: 20px;" class="entry-content" th:utext="${post.localizedDescr(#locale)}"></div>
+            </article>
+        </div>
+    </div>
+</div>
+
+<div th:replace="baseFooter :: baseFooter" xmlns:th="http://www.w3.org/1999/xhtml"></div>

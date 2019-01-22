@@ -1,0 +1,78 @@
+<div th:replace="baseHeader :: baseHeader" xmlns:th="http://www.w3.org/1999/xhtml"></div>
+
+<div class="container" style="margin-top: 16px;">
+
+    <main class="belowheader">
+
+        <div class="archive-description" style="margin-bottom: 0px;">
+
+            <h1 style="color: #4a4a4a;" th:text="${title}"></h1>
+
+        </div>
+
+        <div class="row">
+
+            <section class="content col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <div class="row">
+                    <div th:if="${products != null && products.content != null && products.content.size() > 0}"
+                         th:each="item : ${products.content}"
+                         class="col col-lg-6 col-md-6 col-sm-6 col-xs-6"
+                         style="
+                         background-clip: padding-box; border: 10px solid white;
+                         background: #f5f5f5; padding: 20px;">
+
+                        <div class="blog-post-thumbnail-zone col-lg-12 col-md-12 col-sm-12"
+                             th:style="'background-size: cover;background-repeat: no-repeat; background-position: center; background-image: url(/uploads/' + @{${item.imgUrls}} + ')'">
+                            <div class="col-lg-6 col-sm-6 col-md-6"
+                                 style="background: yellow; height: 165px; position: relative; text-align: center; font-size: 34px;font-weight: bold; background-image: url(/images/ic_old_price.png);background-repeat: no-repeat;background-size: 50px;background-position: center 0;">
+                                <span th:text="${item.getOP()}"></span>
+                                <div class="col-lg-9 col-sm-9 col-md-9"
+                                     style="background: red; height: 148px; line-height: 148px; position: absolute; left: 12%; top: 25%;">
+                                <span style="font-size: 65px;color: #FFF;text-align: center;" th:text="${item.getNP()}">
+
+                                </span>
+                                </div>
+                                <div class="col-lg-3 col-sm-3 col-md-3"></div>
+                            </div>
+                            <div class="col-lg-6 col-sm-6 col-md-6"></div>
+                        </div>
+                        <br/>
+                        <h2 th:text="${item.localizedTitle(#locale)}"></h2>
+
+                    </div>
+                </div>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                        </li>
+
+                        <li class="page-item" th:if="${products.getTotalPages() > 0}"
+                            th:each="pageNumber : ${#numbers.sequence(0, products.getTotalPages() - 1)}">
+
+                            <a th:href="@{ '/' + ${key} + '?page=' + ${pageNumber} + '&lang=' + ${#locale} }"
+                               th:with="pg=${pageNumber + 1}"
+                               th:text="${pg}"
+                               th:class="${pageNumber==products.getNumber() + 1} ? 'active page-link' : 'page-link'"></a>
+                        </li>
+
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </section>
+
+        </div>
+
+    </main>
+
+</div>
+
+<div th:replace="baseFooter :: baseFooter" xmlns:th="http://www.w3.org/1999/xhtml"></div>

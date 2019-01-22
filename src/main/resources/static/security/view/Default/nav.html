@@ -1,0 +1,35 @@
+<ul class="nav" ng-if="$root.isAuthenticated" ui-nav>
+    <li class="nav-header hidden-folded">
+        <small class="text-muted">მართვის პანელი</small>
+    </li>
+    <li>
+        <a ui-sref="app.sliders.list" has-role="SUPER_ADMIN">
+            <span class="nav-icon"><i class="fa fa-sliders" aria-hidden="true"></i></span>
+            <span class="nav-text">სლაიდერი</span>
+        </a>
+    </li>
+    <li>
+        <a ui-sref="app.posts.list" has-role="SUPER_ADMIN">
+            <span class="nav-icon"><i class="fa fa-files-o" aria-hidden="true"></i></span>
+            <span class="nav-text">პოსტები</span>
+        </a>
+    </li>
+    <li>
+        <a ui-sref="app.sections.list" has-role="SUPER_ADMIN">
+            <span class="nav-icon"><i class="fas fa-ellipsis-v"></i></span>
+            <span class="nav-text">სექციები</span>
+        </a>
+    </li>
+    <li>
+        <a ui-sref="app.sections.about" has-role="SUPER_ADMIN">
+            <span class="nav-icon"><i class="fa fa-sliders" aria-hidden="true"></i></span>
+            <span class="nav-text">გვერდები</span>
+        </a>
+    </li>
+    <li>
+        <a ui-sref="app.products.list" has-role="SUPER_ADMIN">
+            <span class="nav-icon"><i class="fa fa-star" aria-hidden="true"></i></span>
+            <span class="nav-text">პროდუქტები</span>
+        </a>
+    </li>
+</ul>

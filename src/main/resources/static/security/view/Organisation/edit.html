@@ -1,0 +1,1275 @@
+<div class="padding">
+    <div class="row" ng-form="addEditForm">
+        <div class="col-md-12">
+            <div class="nav-active-border b-primary top box">
+                <div class="nav nav-md" ui-nav>
+                    <a class="nav-link active" href data-toggle="tab"
+                       data-target="#page-1" aria-expanded="false">
+                        ორგანიზაცია
+                    </a>
+                    <a class="nav-link" href data-toggle="tab" data-target="#page-2">
+                        ფილიალი
+                    </a>
+                    <a class="nav-link" href data-toggle="tab"
+                       data-target="#page-3" aria-expanded="false">
+                        კატეგორიები
+                    </a>
+                    <a class="nav-link" href data-toggle="tab"
+                       data-target="#page-4" aria-expanded="false">
+                        პროდუქტები
+                    </a>
+                    <a class="nav-link" href data-toggle="tab"
+                       data-target="#page-5" aria-expanded="false">
+                        მაგიდები
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="tab-content">
+                <div class="tab-pane animated fadeIn  active" id="page-6">
+                    <div class="box">
+                        <div class="box-header">
+                            <h2>სესხის გეგმა <span ng-show="holder.user.personalNumber != null"> - {{holder.loan.loanId}} -  {{holder.user.personalNumber}} / {{holder.user.firstname}} {{holder.user.lastname}}</span>
+                                &nbsp;&nbsp;<span class="label label-lg primary pos-rlt m-r-xs"><b
+                                        class="arrow left b-primary"></b>{{holder.loan.status}}</span>
+                                <div class="pull-right">
+
+                                    <button class="md-btn md-raised m-b-sm red"
+                                            ng-if="holder.loan.status == 'აქტიური' ||
+                                            holder.loan.status == 'დახურული' ||
+                                            holder.loan.status == 'ჩამოწერილი' ||
+                                            holder.loan.status == 'დაპაუზებული'"
+                                            ui-sref="app.loanhistory.search({loanId: holder.loan.loanId})">
+                                        ისტორიის ნახვა
+                                    </button>
+                                </div>
+                            </h2>
+                        </div>
+                        <div class="box-divider m-a-0"></div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <fieldset ng-disabled="holder.loan.status != 'აპლიკაცია'"
+                                              ng-hide="holder.loan.status != 'აპლიკაცია'">
+                                        <div class="form-group">
+                                            <label class="form-control-label">სესხის ტიპი</label>
+                                            <select class="form-control c-select"
+                                                    ng-model="loanType"
+                                                    ng-options="item.id as item.name for item in loanTypeList"
+                                                    ng-change="loadAllByChangeType()"
+                                                    required>
+                                                <option value='' selected="selected" disabled>- აირჩიეთ ტიპი -</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-control-label">სესხის შაბლონი</label>
+                                            <select class="form-control c-select"
+                                                    ng-model="holder.loanPlan"
+                                                    ng-options="item as item.planName for item in loanPlanList"
+                                                    ng-change="changePlan()"
+                                                    required>
+                                                <option value='' selected="selected" disabled>- აირჩიეთ შაბლონი -
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group" ng-show="loanPacketList.length > 0">
+                                            <label class="form-control-label">სესხის პაკეტი</label>
+                                            <select class="form-control c-select"
+                                                    ng-model="selectedPlan"
+                                                    ng-options="item as item.fullName for item in loanPacketList"
+                                                    ng-change="emptySelectedCommission()"
+                                                    required>
+                                                <option value='' selected="selected" disabled>- აირჩიეთ პაკეტი -
+                                                </option>
+                                            </select>
+                                            <hr>
+                                            <div ng-if="selectedPlan != null">
+                                                <span ng-if="selectedPlan.isAnnual">
+                                                    პაკეტის წლიური ღირებულება:{{selectedPlan.annualPrice}}
+                                                </span>
+                                                <span ng-if="!selectedPlan.isAnnual">
+                                                    პაკეტის ჩართვის საფასური:{{selectedPlan.packetEnablePrice}},
+                                                    პაკეტის ყოველთვიური შემოსატანი:{{selectedPlan.monthlyPrice}}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-show="loanCommissionList.length > 0">
+                                            <label class="form-control-label">სესხის საკომისიო</label>
+                                            <select class="form-control c-select"
+                                                    ng-model="selectedCommission"
+                                                    ng-options="item as item.fullName for item in loanCommissionList"
+                                                    ng-change="emptySelectedPlan()"
+                                                    required>
+                                                <option value='' selected="selected" disabled>- აირჩიეთ საკომისიო -</option>
+                                            </select>
+                                            <hr>
+                                            <div ng-if="selectedCommission != null">
+                                                პაკეტის ყოველთვიური შემოსატანი:{{selectedCommission.loanPercent}}
+                                            </div>
+                                        </div>
+                                        <div class="form-group" ng-show="loanType == 'AUTO_LOMBARD' ">
+                                            <label class="form-control-label">გირავნობის ტარიფები</label>
+                                            <select class="form-control c-select"
+                                                    ng-model="loanGiveOutComission"
+                                                    ng-options="item.price as item.desc for item in giveOutComissionList"
+                                                    ng-change="changeGiveOutComission()"
+                                                    required>
+                                                <option value='' selected="selected" disabled>- აირჩიეთ გირავნობის ტარიფი -
+                                                </option>
+                                            </select>
+                                            <hr>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-control-label">ნოტარიუსი</label>
+                                            <select class="form-control c-select"
+                                                    ng-model="notary"
+                                                    ng-options="item as item.notaryFirstname +' '+ item.notaryLastname for item in notaryList"
+                                                    required>
+                                                <option value='' selected="selected">
+                                                    - არასანოტარო -
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group m-b">
+                                                <div class="input-group-btn dropdown">
+                                                    <button type="button" class="btn white"
+                                                            aria-expanded="false" ng-click="openGraphModal()">გრაფიკი <i
+                                                            class="fa fa-calendar"></i>
+                                                    </button>
+                                                </div>
+                                                <input type="text" class="form-control"
+                                                       ng-model="generatedGraph"
+                                                       ng-readonly="true"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>გადახდის სიხშირე</label>
+                                            <input class="form-control"
+                                                   ng-model="holder.cpp.paymentFrequency"
+                                                   ng-disabled="true">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>თანხა</label>
+                                            <input type="number" class="form-control" placeholder="თანხა"
+                                                   ng-model="holder.cpp.amount"
+                                                   required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>პროცენტი</label>
+                                            <input type="number" class="form-control" placeholder="პროცენტი"
+                                                   ng-model="holder.cpp.percent"
+                                                   required>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>პერიოდი:(თვეებში / კვირებში)</label>
+                                                    <input type="number" class="form-control" placeholder="პერიოდი:(თვეებში / კვირებში)"
+                                                           ng-model="tempPeriod"
+                                                           ng-change="changeTempPariod()">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>ჯარიმა გრაფიკში(პროცენტში)</label>
+                                                    <input type="number" class="form-control"
+                                                           placeholder="ჯარიმა გრაფიკში"
+                                                           ng-model="holder.cpp.penaltyInSchedule"
+                                                           required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label>პერიოდი</label>
+                                                    <input type="number" class="form-control"
+                                                           placeholder="პერიოდი დღეებში"
+                                                           ng-model="holder.cpp.periodDays"
+                                                           ng-disabled="true"
+                                                           required>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>ჯარიმა გრაფიკს გარეთ(პროცენტში)</label>
+                                                    <input type="number" class="form-control"
+                                                           placeholder="ჯარიმა გრაფიკს გარეთ"
+                                                           ng-model="holder.cpp.penaltyOutSchedule"
+                                                           required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>წინასწარ დაფარვის საკომისიო(მაგ. 2%-ში)</label>
+                                            <input type="number" class="form-control" placeholder="წინ. დაფ. საკო"
+                                                   ng-model="holder.cpp.prepaymentCommission"
+                                                   required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>გაცემის საკომისიო(მაგ. 4%-ში)</label>
+                                            <input type="number" class="form-control" placeholder="გაც. საკ. პროცენტი"
+                                                   ng-model="holder.cpp.loanGiveOutCommission"
+                                                   required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="md-check">
+                                                <input type="checkbox" checked="checked" ng-model="holder.cpp.companyPays"
+                                                       ng-true-value="'yes'"
+                                                       ng-false-value="'no'"
+                                                >
+                                                <i class="green"></i>
+                                                კომპანია იხდის სანოტარო საზღაურს? {{holder.cpp.companyPays}}
+                                            </label>
+                                        </div>
+                                    </fieldset>
+                                    <fieldset ng-disabled="holder.loan.status == 'აპლიკაცია'"
+                                              ng-hide="holder.loan.status == 'აპლიკაცია'">
+                                        <table class="table table-striped">
+                                            <tbody>
+                                            <tr>
+                                                <td>ძირითადი მსესხებელი:</td>
+                                                <td><b>{{holder.user.firstname}} {{holder.user.lastname}}</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td>ოპერატორი:</td>
+                                                <td><b>{{operator.firstname}} {{operator.lastname}}</b></td>
+                                            </tr>
+                                            <tr>
+                                                <td>სესხის ალგორითმი:</td>
+                                                <td>
+                                                    {{
+                                                    holder.cpp.loanType == 0 ? "სტანდარტული" :
+                                                    holder.cpp.loanType == 1 ? "გაგრძელებადი" :
+                                                    holder.cpp.loanType == 2 ? "ამორტიზებული" :
+                                                    holder.cpp.loanType == 3 ? "არასტანდარტული" :""
+                                                    }}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>სესხის ტიპი:</td>
+                                                <td><b>
+                                                    {{
+                                                    holder.cpp.eLoanType == 'NONE' ? "უსახელო" :
+                                                    holder.cpp.eLoanType == 'BUSINESS' ? "ბიზნესი" :
+                                                    holder.cpp.eLoanType == 'CONSUMER' ? "სამომხმარებლო" :
+                                                    holder.cpp.eLoanType == 'AUTO_LOMBARD' ? "ავტო-ლომბარდი" :
+                                                    holder.cpp.eLoanType == 'GOLD_LOMBARD' ? "ოქროს-ლომბარდი" :""
+                                                    }}
+                                                </b>
+                                                </td>
+                                            </tr>
+                                            <tr ng-if="selectedPlan != null">
+                                                <td>პაკეტის ტიპი:</td>
+                                                <td>{{selectedPlan.fullName}}</td>
+                                            </tr>
+                                            <tr ng-if="selectedCommission != null">
+                                                <td>საკომისიოს ტიპი:</td>
+                                                <td>{{selectedCommission.fullName}}</td>
+                                            </tr>
+                                            <tr ng-if="selectedPlan.monthlyPrice != null">
+                                                <td>პაკეტური მომსახურების ღირებულება:</td>
+                                                <td>{{selectedPlan.monthlyPrice / 30 * holder.cpp.paymentFrequency}}
+                                                    ლარი
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>პერიოდი:</td>
+                                                <td>{{holder.cpp.periodDays}} დღე</td>
+                                            </tr>
+                                            <tr>
+                                                <td>პროცენტი:</td>
+                                                <td>{{holder.cpp.percent}}%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>პროცენტის დარიცხვა:</td>
+                                                <td>{{holder.cpp.percentDays}} დღე</td>
+                                            </tr>
+                                            <tr>
+                                                <td>სიხშირე:</td>
+                                                <td>{{holder.cpp.paymentFrequency}} დღე</td>
+                                            </tr>
+                                            <tr>
+                                                <td>თანხა:</td>
+                                                <td><b>{{holder.cpp.amount}} ლარი</b></td>
+                                            </tr>
+                                            <tr ng-if="holder.cpp.loanManagementPrice > 0">
+                                                <td>სესხის მართვის საკომისიო:</td>
+                                                <td>{{holder.cpp.loanManagementPrice}}%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>წინასწარ დაფარვის საკომისიო:</td>
+                                                <td>{{holder.cpp.prepaymentCommission}}%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>სესხის გაცემის საკომისიო:</td>
+                                                <td>{{holder.cpp.loanGiveOutCommission}}%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>შიდა ჯარიმა:</td>
+                                                <td>{{holder.cpp.penaltyInSchedule}}%</td>
+                                            </tr>
+                                            <tr>
+                                                <td>გარე ჯარიმა:</td>
+                                                <td>{{holder.cpp.penaltyOutSchedule}}%</td>
+                                            </tr>
+                                            <tr  ng-if="holder.cpp.eLoanType != 'AUTO_LOMBARD' && holder.cpp.notary != null" ng-show="holder.cpp.notary != null">
+                                                <td>ნოტარიუსი:</td>
+                                                <td><b>{{holder.cpp.notary.notaryFirstname}}
+                                                    {{holder.cpp.notary.notaryLastname}}</b></td>
+                                            </tr>
+                                            <tr ng-if="holder.cpp.eLoanType != 'AUTO_LOMBARD' && holder.cpp.notary != null" ng-show="holder.cpp.notaryFee == 'yes'">
+                                                <td>ნოტარიუსის ხარჯი:</td>
+                                                <td>{{notaryBill(holder.cpp.amount, holder.cpp.notaryAmt1,
+                                                    holder.cpp.notaryAmt2)}} ლარი
+                                                </td>
+                                            </tr>
+                                            <tr ng-if="holder.cpp.eLoanType != 'AUTO_LOMBARD' && holder.cpp.notary != null" ng-show="holder.cpp.notaryFee == 'yes'">
+                                                <td>ნოტარიუსის ხარჯს:</td>
+                                                <td>{{(holder.cpp.companyPays == 'yes' ? "იხდის კომპანია" : "იხდის მომხმარებელი")}}
+                                                </td>
+                                            </tr>
+                                            <tr ng-if="holder.cpp.eLoanType != 'AUTO_LOMBARD' && holder.cpp.notary != null" ng-show="holder.cpp.vat == 'yes'">
+                                                <td>ნოტარიუსის დღგ:</td>
+                                                <td>{{notaryVAT(holder.cpp.amount, 18.0, holder.cpp.notaryAmt1,
+                                                    holder.cpp.notaryAmt2)}} ლარი
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>გადაეცეს კრედიტინფოს:</td>
+                                                <td><input type="checkbox" ng-model="creditInfo.status" ng-click="addToCreditInfo()">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>არ გადაეცეს კრედიტინფოს</td>
+                                                <td><input type="checkbox" ng-model="creditInfo.forbidDownload" ng-click="downloadForbid()">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2">
+                                                    <span ng-repeat="item in generatedGraph" ng-if="item.length > 1">
+                                                            <[{{$index+1}}] {{item}}>,
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </fieldset>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="dker"
+                                         style="display: block;height: 600px;overflow-y: scroll;padding: 10px;">
+                                        <div class="p-a-md">
+                                            <table id="commentsTable"></table>
+                                        </div>
+                                    </div>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" placeholder="კომენტარის დამატება..."
+                                               ng-model="comment">
+                                        <div class="input-group-btn">
+                                            <button type="button" class="btn white" ng-click="addCommentOnLoan()">
+                                                დამატება
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane animated fadeIn " id="page-1">
+                    <div class="box">
+                        <div class="box-header">
+                            <h2>ფიზიკური პირი <span ng-show="holder.user.personalNumber != null"> - {{holder.loan.loanId}} -  {{holder.user.personalNumber}} / {{holder.user.firstname}} {{holder.user.lastname}}</span>
+                                &nbsp;&nbsp;<span class="label label-lg primary pos-rlt m-r-xs"><b
+                                        class="arrow left b-primary"></b>{{holder.loan.status}}</span></h2>
+                        </div>
+                        <div class="box-divider m-a-0"></div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <table class="table table-striped">
+                                        <tbody>
+                                        <tr>
+                                            <td>პირადი №:</td>
+                                            <td>{{holder.user.personalNumber}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>სერიული №:</td>
+                                            <td>{{holder.user.serialNumber}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>სახელი:</td>
+                                            <td>{{holder.user.firstname}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>გვარი:</td>
+                                            <td>{{holder.user.lastname}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><b>საკონტაქტო ტელეფონი:</b></td>
+                                            <td><b>{{holder.user.phonenumber}}</b></td>
+                                        </tr>
+                                        <tr>
+                                            <td>დაბადების თარიღი:</td>
+                                            <td>{{holder.user.birthdate}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>დაბადების ადგილი:</td>
+                                            <td>{{holder.user.birthpalce}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>სქესი:</td>
+                                            <td>{{holder.user.gender}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ოჯახური მდგომარეობა:</td>
+                                            <td>{{holder.user.maritalStatus}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>იურიდიული მისამართი:</td>
+                                            <td>{{holder.user.legalAddress}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ფაქტობრივი მისამართი:</td>
+                                            <td>{{holder.user.factualAddress}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>სამუშაო ადგილი:</td>
+                                            <td>{{holder.user.workplace}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>კომპანიის ს/ნ:</td>
+                                            <td>{{holder.user.companyIdentificationNumber}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ბიზნესის ადგილმდებარეობა:</td>
+                                            <td>{{holder.user.businessplace}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>თვიური შემოსავალი:</td>
+                                            <td>{{holder.user.monthlyIncome}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>თვიური მოგება/შემოსავლების აღწერა:</td>
+                                            <td>{{holder.user.monthlyIncomeDescription}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ინფორმაცია ალტერნატიული შემოსავლის
+                                                წყაროზე:
+                                            </td>
+                                            <td>{{holder.user.alternativeIncome}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>საქონელი/სხვა მარაგები:</td>
+                                            <td>{{holder.user.goods}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ძირითადი საშუალებები:</td>
+                                            <td>{{holder.user.mainPossibilities}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>მიზნობრიობა:</td>
+                                            <td>{{holder.user.purpose}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>დამო.პირ.რაოდ:</td>
+                                            <td>{{holder.user.depPerQty}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>სოც.დახმარება</td>
+                                            <td>{{holder.user.socHelp}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane animated fadeIn " id="page-2">
+                    <div>
+                        <div class="box">
+                            <div class="box-header">
+                                <h2>ოჯახის კუთვნილების ფორმა <span ng-show="holder.user.personalNumber != null"> - {{holder.loan.loanId}} -  {{holder.user.personalNumber}} / {{holder.user.firstname}} {{holder.user.lastname}}</span>
+                                    &nbsp;&nbsp;<span class="label label-lg primary pos-rlt m-r-xs"><b
+                                            class="arrow left b-primary"></b>{{holder.loan.status}}</span></h2>
+                            </div>
+                            <div class="box-divider m-a-0"></div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>უძრავ-მოძრავი ქონება [დასახელება/აღწერილობა/საბაზრო
+                                                ღირებულება]</label>
+                                            <div class="input-group">
+                                                <input type="text"
+                                                       class="form-control"
+                                                       ng-model="qonebaName"
+                                                       placeholder="შეიყვანეთ ქონების სახელი">
+                                                <span class="input-group-btn">
+                                                    <button class="btn white" type="button" ng-click="addQoneba()" ng-if="holder.loan.status != 'აქტიური'
+                                                        || holder.loan.status == 'დახურული'
+                                                        || holder.loan.status == 'დაპაუზებული'
+                                                        || holder.loan.status == 'ჩამოწერილი'">
+                                                        <span class="fa fa-plus"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" ng-repeat="item in qonebaList track by $index">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>ქონების დასახელება</label>
+                                            <div class="input-group">
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="შეიყვანეთ საკადასტრო კოდი"
+                                                       ng-model="qonebaList[$index].items"
+                                                       readonly>
+                                                <span class="input-group-btn"
+                                                      ng-if="holder.loan.status != 'აქტიური'
+                                                        || holder.loan.status == 'დახურული'
+                                                        || holder.loan.status == 'დაპაუზებული'
+                                                        || holder.loan.status == 'ჩამოწერილი'">
+                                                    <button class="btn white" type="button"
+                                                            ng-click="removeQoneba(item)">
+                                                        <span class="fa fa-remove"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="!qonebaList.length">
+                                    <hr>
+                                    <div class="warning" style="text-align:center;padding:5px;">
+                                        <span>ქონების ჩანაწერები არ არის</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="box-divider m-a-0"></div>
+                            <div class="box-body">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>ტექნიკა [დასახელება/აღწერილობა/საბაზრო ღირებულება] ან დეტალური
+                                                ინფორმაცია შემოსავლების შესახებ (პლანტაციის აღწ./ბიზნესის აღწ./სხვა
+                                                შემოსავლები)</label>
+                                            <div class="input-group">
+                                                <input type="text"
+                                                       class="form-control"
+                                                       ng-model="technikaName"
+                                                       placeholder="შეიყვანეთ საკადასტრო კოდი">
+                                                <span class="input-group-btn">
+                                                    <button class="btn white" type="button" ng-click="addTechnika()" ng-if="holder.loan.status != 'აქტიური'
+                                                        || holder.loan.status == 'დახურული'
+                                                        || holder.loan.status == 'დაპაუზებული'
+                                                        || holder.loan.status == 'ჩამოწერილი'">
+                                                        <span class="fa fa-plus"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" ng-repeat="item in technikaList track by $index">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>ტექსნიკის დასახელება</label>
+                                            <div class="input-group">
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="შეიყვანეთ საკადასტრო კოდი"
+                                                       ng-model="technikaList[$index].items"
+                                                       readonly>
+                                                <span class="input-group-btn">
+                                                    <button class="btn white" type="button"
+                                                            ng-click="removeTechnika(item)"
+                                                            ng-if="holder.loan.status != 'აქტიური'
+                                                        || holder.loan.status == 'დახურული'
+                                                        || holder.loan.status == 'დაპაუზებული'
+                                                        || holder.loan.status == 'ჩამოწერილი'">
+                                                        <span class="fa fa-remove"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="!technikaList.length">
+                                    <hr>
+                                    <div class="yellow" style="text-align:center;padding:5px;">
+                                        <span>ტექსნიკის ჩანაწერები არ არის</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane animated fadeIn " id="page-3">
+                    <div>
+                        <div class="box">
+                            <div class="box-header">
+                                <h2>საკონტაქტო ფორმა <span ng-show="holder.user.personalNumber != null"> - {{holder.loan.loanId}} -  {{holder.user.personalNumber}} / {{holder.user.firstname}} {{holder.user.lastname}}</span>
+                                    &nbsp;&nbsp;<span class="label label-lg primary pos-rlt m-r-xs"><b
+                                            class="arrow left b-primary"></b>{{holder.loan.status}}</span>
+                                </h2>
+                            </div>
+                            <div class="box-divider m-a-0"></div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>სახელი გვარი</label>
+                                            <input type="text" class="form-control"
+                                                   placeholder="სახელი გვარი"
+                                                   ng-model="contact.fullName">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>კავშირი მსესხებელთან</label>
+                                            <input type="text" class="form-control"
+                                                   placeholder="კავშირი მსესხებელთან"
+                                                   ng-model="contact.relation">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>სამუშაო ადგილი</label>
+                                            <input type="text" class="form-control"
+                                                   placeholder="სამუშაო ადგილი"
+                                                   ng-model="contact.workplace">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>ხელფასი</label>
+                                            <input type="number" class="form-control"
+                                                   placeholder="ხელფასი"
+                                                   ng-model="contact.salary">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label>ტელეფონი</label>
+                                            <div class="input-group">
+                                                <input type="text"
+                                                       class="form-control"
+                                                       ng-model="contact.telephone"
+                                                       placeholder="ტელეფონი">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button class="btn white" type="button" ng-click="addContactPerson()"
+                                                style="float:right"
+                                                ng-if="holder.loan.status != 'აქტიური'
+                                                        || holder.loan.status == 'დახურული'
+                                                        || holder.loan.status == 'დაპაუზებული'
+                                                        || holder.loan.status == 'ჩამოწერილი'">
+                                            <span class="fa fa-plus"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row" ng-repeat="item in contactInfoList track by $index">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>საკონტაქტო პირი</label>
+                                            <div class="input-group">
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="შეიყვანეთ საკადასტრო კოდი"
+                                                       ng-model="contactInfoList[$index].info"
+                                                       readonly>
+                                                <span class="input-group-btn">
+                                                    <button class="btn white" type="button"
+                                                            ng-click="removeContactInfo(item)"
+                                                            ng-if="holder.loan.status != 'აქტიური'
+                                                        || holder.loan.status == 'დახურული'
+                                                        || holder.loan.status == 'დაპაუზებული'
+                                                        || holder.loan.status == 'ჩამოწერილი'">
+                                                        <span class="fa fa-remove"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="!contactInfoList.length">
+                                    <hr>
+                                    <div class="warning" style="text-align:center;padding:5px;">
+                                        <span>ჩანაწერები არ არის</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane animated fadeIn " id="page-4">
+                    <div>
+                        <div class="box">
+                            <div class="box-header">
+                                <h2>საკადასტრო კოდის ფორმა <span ng-show="holder.user.personalNumber != null"> - {{holder.loan.loanId}} -  {{holder.user.personalNumber}} / {{holder.user.firstname}} {{holder.user.lastname}}</span>
+                                    &nbsp;&nbsp;<span class="label label-lg primary pos-rlt m-r-xs"><b
+                                            class="arrow left b-primary"></b>{{holder.loan.status}}</span>
+                                </h2>
+                            </div>
+                            <div class="box-divider m-a-0"></div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>საკადასტრო კოდის დამატება</label>
+                                            <div class="input-group">
+                                                <input type="text"
+                                                       class="form-control"
+                                                       ng-model="cadCodeName"
+                                                       placeholder="შეიყვანეთ საკადასტრო კოდი">
+                                                <span class="input-group-btn">
+                                                    <button class="btn white" type="button" ng-click="addCadCode()">
+                                                        <span class="fa fa-plus"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" ng-repeat="item in cadCodeList track by $index">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>საკადასტრო კოდი</label>
+                                            <div class="input-group">
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="შეიყვანეთ საკადასტრო კოდი"
+                                                       ng-model="cadCodeList[$index].catCode"
+                                                       readonly>
+                                                <span class="input-group-btn">
+                                                    <button class="btn white" type="button"
+                                                            ng-click="removeCadCode(item)" ng-if="holder.loan.status != 'აქტიური'
+                                                        || holder.loan.status == 'დახურული'
+                                                        || holder.loan.status == 'დაპაუზებული'
+                                                        || holder.loan.status == 'ჩამოწერილი'">
+                                                        <span class="fa fa-remove"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="!cadCodeList.length">
+                                    <hr>
+                                    <div class="warning" style="text-align:center;padding:5px;">
+                                        <span>ჩანაწერები არ არის</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane animated fadeIn " id="page-5">
+                    <div>
+                        <div class="box">
+                            <div class="box-header">
+                                <h2>ვალდებულებების ფორმა <span ng-show="holder.user.personalNumber != null"> - {{holder.loan.loanId}} -  {{holder.user.personalNumber}} / {{holder.user.firstname}} {{holder.user.lastname}}</span>
+                                    &nbsp;&nbsp;<span class="label label-lg primary pos-rlt m-r-xs"><b
+                                            class="arrow left b-primary"></b>{{holder.loan.status}}</span>
+                                </h2>
+                            </div>
+                            <div class="box-divider m-a-0"></div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-control-label">დასახელება</label>
+                                            <select class="form-control c-select"
+                                                    ng-model="valdebuleba.loanName"
+                                                    ng-options="item for item in loanNamesList"
+                                                    required>
+                                                <option value='' selected="selected" disabled>- აირჩიეთ ტიპი -</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="form-control-label">ვალუტა</label>
+                                            <select class="form-control c-select"
+                                                    ng-model="valdebuleba.currency"
+                                                    ng-options="item for item in currencyList"
+                                                    required>
+                                                <option value='' selected="selected" disabled>- აირჩიეთ ვალუტა -
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="form-control-label">პერიოდი</label>
+                                            <select class="form-control c-select"
+                                                    ng-model="valdebuleba.period"
+                                                    ng-options="item for item in periodList"
+                                                    required>
+                                                <option value='' selected="selected" disabled>- აირჩიეთ პერიოდი -
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="form-control-label">თანხა</label>
+                                            <input type="number" class="form-control"
+                                                   placeholder="შეიყვანეთ თანხა"
+                                                   ng-model="valdebuleba.amount">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label class="form-control-label">დაფარვის თარიღი</label>
+                                            <input type="text" class="form-control"
+                                                   placeholder="დღ-თვ-წელი"
+                                                   ng-model="valdebuleba.date"
+                                                   ui-mask="99-99-9999"
+                                                   model-view-value="{{true}}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <button class="btn white" type="button" ng-click="addValdebuleba()" ng-if="holder.loan.status != 'აქტიური'
+                                                        || holder.loan.status == 'დახურული'
+                                                        || holder.loan.status == 'დაპაუზებული'
+                                                        || holder.loan.status == 'ჩამოწერილი'"
+                                                style="float:right">
+                                            <span class="fa fa-plus"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row" ng-repeat="item in valdebulabaList track by $index">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>დასახელება / ვალუტა / პერიოდი / თანხა / დაფარვის თარიღი</label>
+                                            <div class="input-group">
+                                                <input type="text"
+                                                       class="form-control"
+                                                       value="{{valdebulabaList[$index].obligationName}} / {{valdebulabaList[$index].currency}} / {{valdebulabaList[$index].timePeriod}} / {{valdebulabaList[$index].amount}} / {{valdebulabaList[$index].paymentDate}}"
+                                                       readonly>
+                                                <span class="input-group-btn">
+                                                    <button class="btn white" type="button"
+                                                            ng-click="removeValdebuleba(item)" ng-if="holder.loan.status != 'აქტიური'
+                                                        || holder.loan.status == 'დახურული'
+                                                        || holder.loan.status == 'დაპაუზებული'
+                                                        || holder.loan.status == 'ჩამოწერილი'">
+                                                        <span class="fa fa-remove"></span>
+                                                    </button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="!valdebulabaList.length">
+                                    <hr>
+                                    <div class="warning" style="text-align:center;padding:5px;">
+                                        <span>ჩანაწერები არ არის</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane animated fadeIn " id="page-7">
+                    <div class="box">
+                        <div class="box-header">
+                            <h2>სოლიდარული მოვალე/მსესხებელი <span ng-show="holder.user.personalNumber != null"> - {{holder.loan.loanId}} -  {{holder.user.personalNumber}} / {{holder.user.firstname}} {{holder.user.lastname}}</span>
+                                &nbsp;&nbsp;<span class="label label-lg primary pos-rlt m-r-xs"><b
+                                        class="arrow left b-primary"></b>{{holder.loan.status}}</span>
+                            </h2>
+                        </div>
+                        <div class="box-divider m-a-0"></div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <table class="table table-striped">
+                                        <tbody>
+                                        <tr>
+                                            <td>პირადი №:</td>
+                                            <td><input class="form-control"
+                                                       ng-model="movale.personalNumber"
+                                                       ng-change="onMovalePersonalNumberChange()"
+                                                       maxlength="11"
+                                                       ui-number-mask></td>
+                                        </tr>
+                                        <tr>
+                                            <td>სერიული №:</td>
+                                            <td>{{movale.user.serialNumber}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>სახელი:</td>
+                                            <td>{{movale.user.firstname}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>გვარი:</td>
+                                            <td>{{movale.user.lastname}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>დაბადების თარიღი:</td>
+                                            <td>{{movale.user.birthdate}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>დაბადების ადგილი:</td>
+                                            <td>{{movale.user.birthpalce}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>სქესი:</td>
+                                            <td>{{movale.user.gender}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ოჯახური მდგომარეობა:</td>
+                                            <td>{{movale.user.maritalStatus}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>იურიდიული მისამართი:</td>
+                                            <td>{{movale.user.legalAddress}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ფაქტობრივი მისამართი:</td>
+                                            <td>{{movale.user.factualAddress}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>სამუშაო ადგილი:</td>
+                                            <td>{{movale.user.workplace}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ბიზნესის ადგილმდებარეობა:</td>
+                                            <td>{{movale.user.businessplace}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>საკონტაქტო ტელეფონი:</td>
+                                            <td>{{movale.user.phonenumber}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>თვიური შემოსავალი:</td>
+                                            <td>{{movale.user.monthlyIncome}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>თვიური მოგება/შემოსავლების აღწერა:</td>
+                                            <td>{{movale.user.monthlyIncomeDescription}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ინფორმაცია ალტერნატიული შემოსავლის
+                                                წყაროზე:
+                                            </td>
+                                            <td>{{movale.user.alternativeIncome}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>საქონელი/სხვა მარაგები:</td>
+                                            <td>{{movale.user.goods}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ძირითადი საშუალებები:</td>
+                                            <td>{{movale.user.mainPossibilities}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>მიზნობრიობა:</td>
+                                            <td>{{movale.user.purpose}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>დამო.პირ.რაოდ:</td>
+                                            <td>{{movale.user.depPerQty}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>სოც.დახმარება</td>
+                                            <td>{{movale.user.socHelp}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>კავშირი მსესხებელთან</td>
+                                            <td>
+                                                <select class="form-control c-select"
+                                                        ng-model="bailsman.role"
+                                                        ng-options="item for item in contactToBailsmanList"
+                                                        required>
+                                                    <option value='' selected="selected" disabled>- აირჩიეთ კავშირი -
+                                                    </option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                საკრედიტო ისტორია&nbsp;<input type="checkbox"
+                                                                              ng-model="bailsman.creditHistory">
+                                                უძრავი ქონება&nbsp;<input type="checkbox"
+                                                                          ng-model="bailsman.imovableProperty">
+                                                მოძრავი ქონება&nbsp;<input type="checkbox"
+                                                                           ng-model="bailsman.movableProperty">
+                                                ხელფასი&nbsp;<input type="checkbox" ng-model="bailsman.salary">
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <button class="btn btn-fw info pull-right" ng-click="addMovale()">
+                                                    დამატება
+                                                </button>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-8">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <td>სოლიდარული მოვალე/მსესხებელი</td>
+                                            <td>პ/ნ</td>
+                                            <td>ტელეფონი</td>
+                                            <td>კავშირი</td>
+                                            <td>საკრედიტო ისტ.</td>
+                                            <td>ხელფასი</td>
+                                            <td>მოძრავი ქ.</td>
+                                            <td>უძრავი ქ.</td>
+                                            <td>ნაპრი</td>
+                                            <td>წაშლა</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="item in movaleList">
+                                            <td>
+                                                <a ui-sref="app.naturalperson.view({id: item.naturalPerson.personId})" target="_blank">
+                                                    <u>{{item.naturalPerson.firstname}}
+                                                        {{item.naturalPerson.lastname}}</u>
+                                                </a>
+                                            </td>
+                                            <td>{{item.naturalPerson.personalNumber}}</td>
+                                            <td>{{item.naturalPerson.phonenumber}}</td>
+                                            <td>{{item.bailsman.role}}</td>
+                                            <td>{{item.bailsman.creditHistory}}</td>
+                                            <td>{{item.bailsman.salary}}</td>
+                                            <td>{{item.bailsman.mProperty}}</td>
+                                            <td>{{item.bailsman.imProperty}}</td>
+                                            <td>
+                                                <i class="fa fa-server" style="cursor: pointer;"
+                                                   ng-click="showNaprList(item)"></i>
+                                            </td>
+                                            <td><i class="fa fa-remove" style="cursor: pointer;"
+                                                   ng-click="removeMovale(item)"
+                                                   ng-if="holder.loan.status != 'აქტიური'
+                                                        || holder.loan.status == 'დახურული'
+                                                        || holder.loan.status == 'დაპაუზებული'
+                                                        || holder.loan.status == 'ჩამოწერილი'"></i></td>
+                                        </tr>
+                                        <tr ng-if="!movaleList.length">
+                                            <td colspan="100" class="warning" style="text-align:center;padding:5px;">
+                                                ჩანაწერები ვერ მოიძებნა
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane animated fadeIn " id="page-8">
+                    <div class="box">
+                        <div class="box-header">
+                            <h2>ავტო-მონაცემები <span ng-show="holder.user.personalNumber != null"> - {{holder.loan.loanId}} -  {{holder.user.personalNumber}} / {{holder.user.firstname}} {{holder.user.lastname}}</span>
+                                &nbsp;&nbsp;<span class="label label-lg primary pos-rlt m-r-xs"><b
+                                        class="arrow left b-primary"></b>{{holder.loan.status}}</span>
+                            </h2>
+                        </div>
+                        <div class="box-divider m-a-0"></div>
+                        <div class="box-body">
+                            <div class="row" ng-form="carAddForm">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-control-label">რეგისტრაციის ნომერი</label>
+                                                <input type="text" class="form-control"
+                                                       ng-model="car.registrationNumber"
+                                                       placeholder="სარეგისტრაციო ნომერი">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-control-label">VIN კოდი</label>
+                                                <input type="text" class="form-control"
+                                                       ng-model="car.vinNumber" placeholder="VIN კოდი">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-control-label">მწარმოებელი</label>
+                                                <input type="text" class="form-control"
+                                                       ng-model="car.manufacturer" placeholder="მწარმოებელი">
+                                            </div>
+                                            <!-- <div class="form-group">
+                                                <label class="form-control-label">მწარმოებელი</label>
+                                                    <div class="input-group">
+                                                        <ui-select ng-model="car.manufacturer" theme="resources/flatkit/bootstrap">
+                                                            <ui-select-match class="ui-select-match"
+                                                                             placeholder="აირჩიეთ მწარმოებელი">
+                                                                {{$select.selected}}
+                                                            </ui-select-match>
+                                                            <ui-select-choices class="ui-select-choices"
+                                                                               repeat="item in carModelList | filter: $select.search">
+                                                                <span ng-bind-html="item | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                        <span class="input-group-btn">
+                                                    <button ng-click="car.manufacturer = ''" class="btn white">
+                                                        <span class="fa fa-remove"></span>
+                                                    </button>
+                                                </span>
+                                                </div>
+                                            </div> -->
+                                            <div class="form-group">
+                                                <label class="form-control-label">გარბენი</label>
+                                                <input type="number" placeholder="მანქანის გარბენი"
+                                                       class="form-control"
+                                                       ng-model="car.milage">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-control-label">ძრავის მოცულობა</label>
+                                                <input type="number" placeholder="ძრავის მოცულობა"
+                                                       class="form-control"
+                                                       ng-model="car.engine">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-control-label">საწვავის ტიპი</label>
+                                                <select class="form-control c-select"
+                                                        ng-model="car.fuelType"
+                                                        ng-options="item for item in carFuelType"
+                                                        required>
+                                                    <option value='' selected="selected" disabled>- აირჩიეთ ტიპი -
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-control-label">წამყვანი თვლები</label>
+                                                <select class="form-control c-select"
+                                                        ng-model="car.driveWheels"
+                                                        ng-options="item for item in wheelDriveList"
+                                                        required>
+                                                    <option value='' selected="selected" disabled>- აირჩიეთ თვლები -
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-control-label">ფერი</label>
+                                                <input type="text" class="form-control"
+                                                       ng-model="car.color" placeholder="ფერი">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-control-label">დოკუმენტის რეგისტრაციის თარიღი</label>
+                                                <input type="text" class="form-control"
+                                                       ng-model="car.carOwnerDateIssue"
+                                                       placeholder="დღ-თვ-წელი"
+                                                       ui-mask="99-99-9999"
+                                                       model-view-value="{{true}}"
+                                                       placeholder="დოკუმენტის რეგისტრაციის თარიღი">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-control-label">სახელმწიფო ნომერი</label>
+                                                <input type="text" class="form-control"
+                                                       ng-model="car.governmentNumber" placeholder="სახელმწიფო ნომერი">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-control-label">მოდელი</label>
+                                                <input type="text" placeholder="მანქანის მოდელი"
+                                                       class="form-control"
+                                                       ng-model="car.model">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-control-label">მანქანის გამოშვების წელი</label>
+                                                <input type="text" class="form-control"
+                                                       ng-model="car.prodYear"
+                                                       placeholder="წელი"
+                                                       ui-mask="9999"
+                                                       model-view-value="{{true}}">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-control-label">კატეგორია</label>
+                                                <input type="text" placeholder="მანქანის კატეგორია"
+                                                       class="form-control"
+                                                       ng-model="car.category">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-control-label">ცილინდრის რაოდენობა</label>
+                                                <input type="number"
+                                                       class="form-control"
+                                                       placeholder="ცილინდრის რაოდენობა"
+                                                       ng-model="car.cylinder">
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-control-label">გადამცემთა კოლოფი</label>
+                                                <select class="form-control c-select"
+                                                        ng-model="car.gearBox"
+                                                        ng-options="item for item in carGearBoxList"
+                                                        required>
+                                                    <option value='' selected="selected" disabled>- აირჩიეთ ტიპი -
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="form-control-label">კარების რაოდენობა</label>
+                                                <input type="text"
+                                                       class="form-control"
+                                                       placeholder="კარების რაოდენობა"
+                                                       ng-model="car.doors" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-control-label">სააგენტოს ცნობის გაცემა</label>
+                                                <input type="text" class="form-control"
+                                                       ng-model="car.saagentoDate" placeholder="სააგენტოს ცნობის გაცემა">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="form-control-label">სააგენტოს ცნობის ნომერი</label>
+                                                <input type="text" class="form-control"
+                                                       ng-model="car.saagentosCnobisNomeri" placeholder="სააგენტოს ცნობის ნომერი">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button class="btn btn-primary" ng-click="addCarData()" ng-disabled="carAddForm.$invalid">დამატება</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <td>#</td>
+                                            <td>VIN კოდი</td>
+                                            <td>მწარმოებელი/მოდელი</td>
+                                            <td>გავლილია</td>
+                                            <td>გამოშვების თარიღი</td>
+                                            <td>წაშლა</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="item in carList">
+                                            <td>{{item.carId}}</td>
+                                            <td>{{item.vinNumber}}</td>
+                                            <td>{{item.manufacturer}} / {{item.model}}</td>
+                                            <td>{{item.milage}}</td>
+                                            <td>{{item.prodYear}}</td>
+                                            <td><i class="fa fa-remove" style="cursor: pointer;"
+                                                   ng-click="removeCar(item.carId)"></i></td>
+                                        </tr>
+                                        <tr ng-if="!carList.length">
+                                            <td colspan="100" class="warning" style="text-align:center;padding:5px;">
+                                                ჩანაწერები ვერ მოიძებნა
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

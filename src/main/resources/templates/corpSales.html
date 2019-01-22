@@ -1,0 +1,176 @@
+<div th:replace="baseHeader :: baseHeader" xmlns:th="http://www.w3.org/1999/xhtml"></div>
+
+<div class="single-thumbnail"
+     style="background-image: url(&#39;http://litmotion.net/demo/neori/wp-content/uploads/2018/01/art1-compressor.jpg&#39;); height: 250px;" >
+
+    <div class="container">
+
+        <div class="single-thumbnail-inside row align-items-end">
+
+            <div class="single-title-zone ws-sr col">
+                <h1 th:text="${title}"></h1>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="single-top-area clearfix" style="visibility: hidden; margin: 0px auto 0 auto;">
+    <div class="author">
+        <img class="useravatar avatar-57 photo">
+        <div class="author-info">
+            <p></p>
+            <a href="javascript:void(0)"></a>
+        </div>
+    </div>
+    <div class="social-icons row align-items-center">
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="row sr" th:if="${post != null}">
+        <div class="content col-lg-12 mx-auto">
+            <article id="post-92" class="post-91 post type-post status-publish format-standard has-post-thumbnail hentry category-art tag-dolor tag-ipsum tag-lorem tag-sit">
+                <div style="margin-top: 20px;" class="entry-content" th:utext="${post.localizedDescr(#locale)}"></div>
+            </article>
+        </div>
+    </div>
+
+    <div class="row sr">
+
+        <div class="content col-lg-12 mx-auto align-items-center">
+
+            <!-- /.single-top-area -->
+
+            <article id="post-91"
+                     class="post-91 post type-post status-publish format-standard has-post-thumbnail hentry category-art tag-dolor tag-ipsum tag-lorem tag-sit">
+
+                <div class="entry-content">
+
+
+                    <div class="row fr-form-section-holder">
+
+                        <section class="col-md-6">
+                            <label>ორგანიზაციის დასახელება </label>
+                            <input class="form-control" title="ორგანიზაციის დასახელება"
+                                   placeholder="ორგანიზაციის დასახელება" required>
+                        </section>
+                        <section class="col-md-6">
+                            <label>საიდენტიფიკაციო კოდი</label>
+                            <input class="form-control" title="საიდენტიფიკაციო კოდი" placeholder="საიდენტიფიკაციო კოდი"
+                                   required>
+                        </section>
+                        <section class="col-md-6">
+                            <label>ქალაქი/დაბა/სოფელი</label>
+                            <input class="form-control" title="ქალაქი/დაბა/სოფელი" placeholder="ქალაქი/დაბა/სოფელი"
+                                   required>
+                        </section>
+                        <section class="col-md-6">
+                            <label>მისამართი</label>
+                            <input class="form-control" title="მისამართი" placeholder="მისამართი">
+                        </section>
+                        <section class="col-md-6">
+                            <label>პასუხისმგებელი პირის სახელი გვარი </label>
+                            <input class="form-control" title="პასუხისმგებელი პირის სახელი გვარი"
+                                   placeholder="პასუხისმგებელი პირის სახელი გვარი "
+                                   required>
+                        </section>
+                        <section class="col-md-6">
+                            <label>პასუხისმგებელი პირის საკონტაქტო </label>
+                            <input class="form-control" title="პასუხისმგებელი პირის საკონტაქტო"
+                                   placeholder="პასუხისმგებელი პირის საკონტაქტო "
+                                   required>
+                        </section>
+                        <section class="col-md-6">
+                            <label>ელ.ფოსტა </label>
+                            <input class="form-control" title="ელ.ფოსტა" placeholder="ელ.ფოსტა " type="email" required>
+                        </section>
+                        <section class="col-md-6">
+                            <label>ხელმძღვანელის სახელი, გვარი</label>
+                            <input class="form-control" title="ხელმძღვანელის სახელი, გვარი"
+                                   placeholder="ხელმძღვანელის სახელი, გვარი" required>
+                        </section>
+                        <section class="col-md-6">
+                            <label>ხელმძღვანელის თანამდებობა</label>
+                            <input class="form-control" title="ხელმძღვანელის თანამდებობა"
+                                   placeholder="ხელმძღვანელის თანამდებობა" required>
+                        </section>
+                        <section class="col-md-6">
+                            <label>მომსახურე ბანკი</label>
+                            <input class="form-control" title="მომსახურე ბანკი" placeholder="მომსახურე ბანკი" required>
+                        </section>
+                        <section class="col-md-6">
+                            <label>მომსახურე ბანკის ანგარიშის ნოემრი </label>
+                            <input class="form-control" title="მომსახურე ბანკის ანგარიშის ნოემრი"
+                                   placeholder="მომსახურე ბანკის ანგარიშის ნოემრი "
+                                   required>
+                        </section>
+                        <section class="col-md-6">
+                            <label>მომსახურე ბანკის კოდი</label>
+                            <input class="form-control" title="მომსახურე ბანკის კოდი"
+                                   placeholder="მომსახურე ბანკის კოდი" required>
+                        </section>
+                        <section class="col-md-12 success-block" style="text-align: center;margin: 0px; display: none;">
+                            <img src="/images/checked.png" style="height: 50px;">
+                        </section>
+                        <section class="col-md-12">
+                            <button class="btn btn-success col-md-12">გაგზავნა</button>
+                        </section>
+
+                        <script>
+                            jQuery(document).ready(function () {
+                                jQuery(document).on('click', '.btn-success', function (e) {
+                                    e.preventDefault()
+                                    var hasErr = false
+                                    jQuery.each(jQuery(".fr-form-section-holder .form-control"), function (i, v) {
+                                        if (jQuery(v).val() === "") {
+                                            hasErr = true;
+                                        }
+                                    });
+
+                                    if (!hasErr) {
+                                        var table = "<table border='1'>";
+                                        jQuery.each(jQuery(".fr-form-section-holder .form-control"), function (i, v) {
+                                            table += '<tr><td> ' + jQuery(v).attr('title') + ' </td><td>' + jQuery(v).val() + '</td></tr>';
+                                        });
+                                        table += '</table>';
+                                    } else {
+                                        return
+                                    }
+
+                                    jQuery('.btn-success').attr('disabled', true)
+                                    jQuery.ajax({
+                                        url: 'sendFrm',
+                                        type: 'post',
+                                        contentType: 'application/json',
+                                        complete: function (data) {
+                                            jQuery('.success-block').show()
+                                            setTimeout(function () {
+                                                window.location.reload()
+                                            }, 3000)
+                                        },
+                                        data: JSON.stringify({
+                                            body: table
+                                        })
+                                    });
+
+                                })
+                            })
+                        </script>
+                    </div>
+
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div th:replace="baseFooter :: baseFooter" xmlns:th="http://www.w3.org/1999/xhtml"></div>
